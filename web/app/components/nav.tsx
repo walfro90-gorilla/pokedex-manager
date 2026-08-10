@@ -22,6 +22,31 @@ export default async function Nav() {
           PokéDex Manager
         </Link>
 
+        {/* Mobile: salida discreta en el header (la tab bar no lleva logout) */}
+        {user && (
+          <form action={logout} className="sm:hidden">
+            <button
+              type="submit"
+              aria-label="Cerrar sesión"
+              className="rounded-full p-2 text-white/70 transition-colors hover:bg-white/15 hover:text-white"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
+              </svg>
+            </button>
+          </form>
+        )}
+
         {/* Sin sesión solo se ofrecen login/registro; las funciones aparecen
             al autenticarse (las rutas igual están protegidas en proxy.ts) */}
         <div className="hidden items-center gap-x-1 sm:flex">
