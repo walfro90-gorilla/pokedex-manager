@@ -6,7 +6,9 @@
 -- =============================================
 create table if not exists public.collection (
   id          uuid primary key default gen_random_uuid(),
-  user_id     uuid not null references auth.users (id) on delete cascade,
+  -- default auth.uid(): permite inserts vía REST (agente IA) sin user_id explícito;
+  -- el valor sale del JWT y el with check de RLS lo sigue validando
+  user_id     uuid not null default auth.uid() references auth.users (id) on delete cascade,
   pokemon_id  integer not null,              -- id de PokéAPI (fuente de verdad externa)
   name        text not null,
   sprite_url  text,

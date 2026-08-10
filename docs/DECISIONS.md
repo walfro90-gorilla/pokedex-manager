@@ -63,6 +63,19 @@ mano, NO el protocolo MCP; esa distinción ya estaba correcta en "Fuera de alcan
 abajo, pero el README final debe ser explícito sobre esto para no sobre-vender el
 bonus.
 
+## D10 — Ajustes forzados por deprecación de modelos en Groq (2026-08-09)
+Al probar en vivo, Groq ya había retirado `llama-4-scout` (el default de visión del
+código): el único modelo con visión disponible en la key es `qwen/qwen3.6-27b`, un
+modelo razonador que emite bloques `<think>` citando el formato JSON dentro del
+razonamiento — eso rompía la extracción por regex del parser defensivo. Dos cambios
+mínimos: (1) el parser de main.py ahora quita bloques `<think>` antes de parsear
+(generaliza a cualquier provider razonador futuro), (2) default de visión actualizado
+a qwen. La cadena de fallback demostró su valor en esta misma sesión: el 404 de Groq
+saltó limpio a los siguientes providers. Bonus del mismo test en vivo: el tool
+`add_pokemon` del agente fallaba con 403 porque inserta sin `user_id`; fix a nivel DB
+(`user_id default auth.uid()`) — el valor sale del JWT, RLS lo sigue validando, cero
+código nuevo en el servicio.
+
 ## Fuera de alcance (por tiempo, documentado a propósito)
 - MCP server sobre la colección (bonus #2, protocolo específico — distinto del
   tool-calling que sí está implementado en agent.py, ver D9): diseñado, no
