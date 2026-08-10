@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { trainerIdentity } from "@/lib/trainer";
 import Pokeball from "@/app/components/pokeball";
 
 // Banner compacto bajo el header: entrenador + pokébolas utilizadas (equipo
@@ -17,8 +18,7 @@ export default async function TrainerBanner() {
     .select("id", { count: "exact", head: true });
 
   const captured = count ?? 0;
-  const displayName = (user.user_metadata?.display_name as string) || "Entrenador/a";
-  const avatarUrl = user.user_metadata?.avatar_url as string | undefined;
+  const { displayName, avatarUrl } = await trainerIdentity(supabase, user);
   const slots = 6;
 
   return (
