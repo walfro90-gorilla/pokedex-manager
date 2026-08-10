@@ -116,7 +116,14 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
 - [x] Scaffold: ai-service completo (providers/agent/main verificados), schema, compose, evals
 - [x] Repo en GitHub (walfro90-gorilla/pokedex-manager), primer commit hecho
 - [x] web/ scaffolded (create-next-app, TS+Tailwind+App Router+ESLint, lint y build OK)
-- [ ] F1 — Core web (auth + pokedex + collection) — ver docs/PLAN.md
+- [x] Proyecto Supabase "pokedex" (zadorhfbhgkxczenkevf, org walfre.am@gmail.com) creado,
+      schema.sql aplicado (tabla collection + RLS), sin advisories de seguridad
+- [x] web/.env.local y ai-service/.env con URL+anon key reales (gitignored, no en repo)
+- [x] F1 — auth: /login, /register, /logout (Server Actions) + proxy.ts protege /collection.
+      Probado en browser end-to-end. Confirmación de email queda ACTIVA (ver D8 en
+      docs/DECISIONS.md) — cuentas nuevas no loguean hasta confirmar correo.
+- [ ] F1 — falta: /pokedex lista+búsqueda, /pokedex/[name] detalle, /collection CRUD,
+      responsive pass, deploy a Vercel — ver docs/PLAN.md
 - [ ] F2 — Integración IA en frontend (upload + chat) + evals con imágenes reales
 - [ ] F3 — Deploy (Vercel + Cloud Run/Railway) 
 - [ ] F4 — README final + video + entrega a cfernandez@febara.com.mx
