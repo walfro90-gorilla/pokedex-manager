@@ -47,7 +47,25 @@ esto explícitamente en el README y mencionarlo en el video para que no se lea c
 bug. Descartado: desactivar la confirmación — más simple para la demo pero es un
 downgrade de seguridad real que no refleja cómo se corre este flujo en producción.
 
+## D9 — Revisión de alineación contra el brief oficial del cliente (2026-08-09)
+Se comparó `docs/PLAN.md` línea por línea contra el correo de evaluación recibido.
+Resultado: requerimientos funcionales (auth, PokéAPI, persistencia, UI responsive) y
+el orden de criterios de evaluación (funcionalidad > código > UI > arquitectura >
+documentación > bonus) ya coincidían con lo que CLAUDE.md tenía documentado. Único
+gap real: el brief dice explícitamente **"No es necesario que la aplicación esté
+desplegada en producción"**, mientras que el plan trataba el deploy como AC
+bloqueante en F1 y F2. Corregido: deploy pasa a stretch goal en las tres fases (ver
+PLAN.md) — no bloquea ninguna AC, se intenta si el tiempo alcanza después de core +
+bonus documentados. Se reafirma también que el bonus #2 del brief pide MCP (Model
+Context Protocol) específicamente, no "tool calling" genérico — el agente
+implementado (`ai-service/app/agent.py`, ver D3) es un loop de function-calling a
+mano, NO el protocolo MCP; esa distinción ya estaba correcta en "Fuera de alcance"
+abajo, pero el README final debe ser explícito sobre esto para no sobre-vender el
+bonus.
+
 ## Fuera de alcance (por tiempo, documentado a propósito)
-- MCP server sobre la colección (bonus #2): diseñado, no implementado — ver README.
+- MCP server sobre la colección (bonus #2, protocolo específico — distinto del
+  tool-calling que sí está implementado en agent.py, ver D9): diseñado, no
+  implementado — ver README.
 - Tests e2e del frontend; se priorizaron evals de la capa de IA (mayor riesgo).
 - Cache de PokéAPI en DB propia; el cache de fetch de Next.js cubre el caso.
