@@ -1,0 +1,12 @@
+PASS pikachu_artwork.png: esperado=pikachu obtenido=pikachu (conf=1.00, via groq)
+PASS charizard_artwork.png: esperado=charizard obtenido=charizard (conf=1.00, via groq)
+PASS bulbasaur_artwork.png: esperado=bulbasaur obtenido=bulbasaur (conf=1.00, via groq)
+PASS gengar_artwork.png: esperado=gengar obtenido=gengar (conf=1.00, via groq)
+PASS eevee_artwork.png: esperado=eevee obtenido=eevee (conf=1.00, via groq)
+PASS squirtle_home.png: esperado=squirtle obtenido=squirtle (conf=1.00, via groq)
+PASS snorlax_home.png: esperado=snorlax obtenido=snorlax (conf=1.00, via groq)
+FAIL mewtwo_pixel.png: esperado=mewtwo obtenido=meowth (conf=0.95, via groq)
+FAIL jigglypuff_pixel.png: esperado=jigglypuff obtenido=clefairy (conf=0.90, via groq)
+PASS not_a_pokemon.png: esperado=None obtenido=None (conf=0.00, via groq)
+
+8/10 casos correctos

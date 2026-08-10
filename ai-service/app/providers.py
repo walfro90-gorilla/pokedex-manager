@@ -63,6 +63,9 @@ async def _groq_vision(image_b64: str, mime: str, prompt: str) -> LLMResult:
                     ],
                 }],
                 "temperature": 0.1,
+                # qwen3 razona por default y a veces trunca a media-cadena sin
+                # emitir el JSON; sin razonamiento responde directo y estable.
+                "reasoning_effort": "none",
             },
         )
     if r.status_code != 200:

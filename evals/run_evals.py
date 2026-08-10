@@ -11,17 +11,26 @@ pero convierten "parece que funciona" en un número reproducible.
 import json
 import pathlib
 import sys
+import urllib.error
 import urllib.request
 
 BASE = "http://localhost:8000"
 IMAGES = pathlib.Path(__file__).parent / "images"
 
 # archivo -> nombre esperado (None = debe responder found=false)
+# Tres niveles de dificultad: artwork oficial (fácil), renders home (medio),
+# sprites pixelados de 96px (difícil) + control negativo (franjas de color).
 CASES = {
-    "pikachu_card.jpg": "pikachu",
-    "charizard_toy.png": "charizard",
-    "not_a_pokemon.jpg": None,
-    # ... completar hasta ~10 casos
+    "pikachu_artwork.png": "pikachu",
+    "charizard_artwork.png": "charizard",
+    "bulbasaur_artwork.png": "bulbasaur",
+    "gengar_artwork.png": "gengar",
+    "eevee_artwork.png": "eevee",
+    "squirtle_home.png": "squirtle",
+    "snorlax_home.png": "snorlax",
+    "mewtwo_pixel.png": "mewtwo",
+    "jigglypuff_pixel.png": "jigglypuff",
+    "not_a_pokemon.png": None,
 }
 
 
@@ -46,7 +55,13 @@ def main() -> int:
         if not path.exists():
             print(f"SKIP {fname} (no existe)")
             continue
-        result = post_image(path)
+        # Un error del servicio (ej. 502 por output no parseable del modelo)
+        # cuenta como FAIL del caso, no tumba la corrida completa.
+        try:
+            result = post_image(path)
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
+            print(f"FAIL {fname}: esperado={expected} obtenido=ERROR({e})")
+            continue
         got = result["name"] if result["found"] else None
         ok = got == expected
         passed += ok
