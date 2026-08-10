@@ -112,6 +112,27 @@ python evals/run_evals.py                                     # evals (ai-servic
 > OAuth client de Google Cloud. Sin esa config, el login con correo funciona
 > normal y el botón solo mostrará un error si se usa.
 
+## Cómo usarla (guía rápida)
+
+1. **Entra** con la cuenta demo de arriba (o regístrate — llega correo de confirmación).
+   Al primer login te recibe un **tour guiado** de 9 pasos por todas las funciones.
+2. **Explora la Pokédex** y abre cualquier Pokémon: sprite animado, su grito,
+   movimientos (tócalos para ver poder/precisión/PP) y flechas ◀ ▶ para navegar.
+3. **Captura** con el botón de la ficha — confetti y directo a tu colección.
+4. **Tu colección** (`Mi colección`): ponle nombre y foto a tu entrenador (galería o
+   cámara), gana medallas por logros y gestiona tu equipo (notas, soltar).
+5. **Identifica por imagen** (`Identificar`): sube una foto o usa el Modo Pokédex con
+   la cámara del dispositivo; captura en un clic lo que la IA reconozca.
+6. **Chatea** (`Chat`): pídele análisis, comparativas o recomendaciones sobre tu
+   colección — responde con datos reales de sus herramientas, con cards visuales.
+7. **Comunidad** (`Entrenadores`): mira los equipos y medalleros públicos de otros;
+   y juega **¿Quién es ese Pokémon?** para probar tu memoria.
+
+**Problemas comunes:** el correo de confirmación puede caer en spam · la primera
+llamada a `/identify` o `/chat` puede tardar unos segundos (cold start del provider
+LLM) · el botón de Google en una instancia propia requiere configurar el provider
+(nota abajo).
+
 ## Funcionalidades
 
 **Core**
