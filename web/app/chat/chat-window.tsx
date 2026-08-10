@@ -78,11 +78,15 @@ function CardChip({ card }: { card: PokemonCard }) {
   );
 }
 
+// Cada chip demuestra un caso del bonus 3: análisis, comparativas,
+// recomendaciones y curiosidades — siempre con datos reales vía tools.
 const SUGGESTIONS = [
   "¿Qué Pokémon tengo?",
-  "Busca a snorlax",
-  "Agrega a eevee a mi colección",
   "¿Cuál de los míos tiene más ataque?",
+  "Compara a mis dos Pokémon más fuertes",
+  "¿Qué Pokémon me recomiendas agregar según mi equipo?",
+  "Cuéntame una curiosidad de un Pokémon de mi equipo",
+  "Agrega a eevee a mi colección",
 ];
 
 export default function ChatWindow({ initialMessages }: { initialMessages: StoredMessage[] }) {

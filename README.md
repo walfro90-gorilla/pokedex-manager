@@ -9,6 +9,10 @@ con tool calling sobre la colección del usuario.
 Instalable como **PWA** (Chrome/Edge: ícono de instalar en la barra de direcciones;
 móvil: "Agregar a pantalla de inicio").
 
+> **Cuenta demo** para probar la demo en vivo sin registrarse (la confirmación de
+> email está activa a propósito, ver D8): `pokedex-qa-01@e2etest.dev` /
+> `TestPass123!` — con equipo, avatar y medallero ya poblados.
+
 ![PokéDex Manager](docs/screenshot.jpg)
 
 ## Stack
