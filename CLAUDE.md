@@ -141,7 +141,16 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
 - [x] F2 — evals: 10 casos en 3 dificultades, 8/10 (evals/RESULTS.txt). Fallan solo
       sprites pixelados de 96px (mewtwo→persian/meowth, jigglypuff→clefairy) —
       documentar como limitación conocida en README.
-- [ ] F3 — Deploy (stretch, no bloqueante — ver D9)
+- [x] F3 — Deploy en UpCloud: server "pokedex" (209.50.54.47, Ubuntu 26.04, 2vCPU/4GB,
+      root via SSH, key de esta laptop). Código en /opt/pokedex (rsync, sin git en server),
+      docker compose build+up ahí mismo. web:3000 y ai-service:8000 públicos por IP.
+      Verificado en browser contra el deploy: login, colección, chat con tools. Los .env
+      del server tienen NEXT_PUBLIC_AI_SERVICE_URL y CORS_ORIGINS apuntando a la IP.
+      Redeploy = rsync + docker compose build + up -d en el server.
+- [ ] PENDIENTE deploy: Site URL de Supabase Auth sigue en localhost:3000 — los correos
+      de confirmación de cuentas nuevas apuntan mal. Cambiar en dashboard: Authentication
+      → URL Configuration → Site URL = http://209.50.54.47:3000 (acción manual del usuario;
+      el MCP de Supabase quedó conectado a otro proyecto).
 - [ ] F4 — README final + video + entrega a cfernandez@febara.com.mx
 - NOTA sesión: ai-service NO carga .env solo — arrancar con `set -a; source .env; set +a`
   antes de uvicorn (o usar docker compose que sí usa env_file). GROQ_API_KEY real ya
