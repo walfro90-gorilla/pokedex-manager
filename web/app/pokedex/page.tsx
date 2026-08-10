@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { searchPokemon, getPokemonDetail } from "@/lib/pokeapi";
 import TypeBadge from "@/app/components/type-badge";
+import TrainerBanner from "@/app/components/trainer-banner";
 
 export default async function PokedexPage({
   searchParams,
@@ -17,7 +18,9 @@ export default async function PokedexPage({
   const details = await Promise.all(items.map((p) => getPokemonDetail(p.name).catch(() => null)));
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-8">
+    <>
+      <TrainerBanner />
+      <main className="mx-auto w-full max-w-5xl px-4 py-8">
       <h1 className="mb-6 text-3xl font-black">Pokédex</h1>
 
       <form className="mb-8 flex gap-2">
@@ -95,6 +98,7 @@ export default async function PokedexPage({
           </Link>
         )}
       </nav>
-    </main>
+      </main>
+    </>
   );
 }

@@ -29,6 +29,12 @@ export default async function Nav() {
           <Link href="/identify" className={linkCls}>
             Identificar
           </Link>
+          <Link href="/trainers" className={linkCls}>
+            Entrenadores
+          </Link>
+          <Link href="/quien-es" className={linkCls}>
+            ¿Quién es?
+          </Link>
           {user ? (
             <>
               <Link href="/collection" className={linkCls}>
