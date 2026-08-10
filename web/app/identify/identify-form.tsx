@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Image from "next/image";
 import TypeBadge from "@/app/components/type-badge";
+import CameraScanner from "./camera-scanner";
 import { captureIdentifiedAction } from "./actions";
 
 type IdentifyResult = {
@@ -34,13 +35,12 @@ export default function IdentifyForm() {
     setError(null);
   }
 
-  async function handleIdentify() {
-    if (!file) return;
+  const identify = useCallback(async (f: File) => {
     setLoading(true);
     setError(null);
     try {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", f);
       const res = await fetch(`${AI_SERVICE_URL}/identify`, {
         method: "POST",
         body: formData,
@@ -55,10 +55,34 @@ export default function IdentifyForm() {
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  async function handleIdentify() {
+    if (!file) return;
+    await identify(file);
   }
+
+  // Frame capturado desde el modo cámara: mismo flujo que el upload
+  const handleCameraCapture = useCallback(
+    (f: File) => {
+      setFile(f);
+      setPreview(URL.createObjectURL(f));
+      setResult(null);
+      identify(f);
+    },
+    [identify],
+  );
 
   return (
     <div className="flex flex-col gap-5">
+      <CameraScanner onCapture={handleCameraCapture} disabled={loading} />
+
+      <div className="flex items-center gap-3 text-xs text-muted">
+        <span className="h-px flex-1 bg-gray-200" />
+        o sube una imagen
+        <span className="h-px flex-1 bg-gray-200" />
+      </div>
+
       <label className="poke-card flex cursor-pointer flex-col items-center gap-3 border-dashed p-8 text-center">
         <input
           type="file"
