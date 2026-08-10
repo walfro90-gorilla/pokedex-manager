@@ -151,7 +151,11 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       de confirmación de cuentas nuevas apuntan mal. Cambiar en dashboard: Authentication
       → URL Configuration → Site URL = http://209.50.54.47:3000 (acción manual del usuario;
       el MCP de Supabase quedó conectado a otro proyecto).
-- [ ] F4 — README final + video + entrega a cfernandez@febara.com.mx
+- [x] F4 (parcial) — README.md final escrito (arquitectura, setup, env vars, evals 8/10,
+      D1-D10 condensadas, bonus con distinción honesta MCP vs tool-calling, screenshot
+      del deploy en docs/screenshot.jpg)
+- [ ] F4 — falta: video Loom ≤5 min, borrar SIGUIENTE-PASOS.md, clone limpio siguiendo
+      README para validar, correo a cfernandez@febara.com.mx antes del miércoles mediodía
 - NOTA sesión: ai-service NO carga .env solo — arrancar con `set -a; source .env; set +a`
   antes de uvicorn (o usar docker compose que sí usa env_file). GROQ_API_KEY real ya
   está en ai-service/.env (gitignored).
