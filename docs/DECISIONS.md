@@ -38,6 +38,15 @@ La colección guarda user↔pokemon + snapshot (name/types/stats/sprite) para re
 sin N llamadas a PokéAPI. Trade-off aceptado: el snapshot puede quedar desactualizado
 (los datos base de Pokémon son casi estáticos — riesgo mínimo).
 
+## D8 — Confirmación de email activa (default de Supabase Auth)
+Se deja "Confirm email" ON en vez de desactivarlo para la demo. Más fiel a un
+comportamiento production-grade; el costo es que una cuenta nueva no puede loguear
+hasta confirmar el correo — el evaluador necesita revisar el inbox de cada cuenta de
+prueba que cree (o usar un alias `+tag@gmail.com` sobre un correo real). Documentar
+esto explícitamente en el README y mencionarlo en el video para que no se lea como un
+bug. Descartado: desactivar la confirmación — más simple para la demo pero es un
+downgrade de seguridad real que no refleja cómo se corre este flujo en producción.
+
 ## Fuera de alcance (por tiempo, documentado a propósito)
 - MCP server sobre la colección (bonus #2): diseñado, no implementado — ver README.
 - Tests e2e del frontend; se priorizaron evals de la capa de IA (mayor riesgo).
