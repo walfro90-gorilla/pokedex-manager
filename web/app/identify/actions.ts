@@ -38,4 +38,10 @@ export async function captureIdentifiedAction(formData: FormData) {
   }
 
   revalidatePath("/collection");
+  // A la pantalla de specs del recién atrapado, con confetti si fue nuevo
+  redirect(
+    error?.code === "23505"
+      ? `/pokedex/${pokemon.name}`
+      : `/pokedex/${pokemon.name}?captured=1`,
+  );
 }
