@@ -58,7 +58,7 @@ export default function InstallPrompt() {
   if (!deferred && !showIosHint) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 p-3 sm:bottom-4">
+    <div className="fixed inset-x-0 bottom-20 z-50 p-3 sm:bottom-4">
       <div className="mx-auto flex max-w-md items-center gap-3 rounded-2xl border-2 border-gray-200 bg-surface p-3 shadow-xl">
         <Pokeball size={32} className="shrink-0" />
         <div className="flex-1 text-xs">
