@@ -6,8 +6,10 @@ services:
     ports: ["3000:3000"]
     env_file: ./web/.env.local
     depends_on: [ai-service]
+    restart: unless-stopped
 
   ai-service:
     build: ./ai-service
     ports: ["8000:8000"]
     env_file: ./ai-service/.env
+    restart: unless-stopped
