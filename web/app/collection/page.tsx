@@ -5,6 +5,7 @@ import TypeBadge from "@/app/components/type-badge";
 import Pokeball from "@/app/components/pokeball";
 import BadgeCase from "@/app/components/badge-case";
 import { computeBadges } from "@/lib/badges";
+import { trainerIdentity } from "@/lib/trainer";
 import AvatarUpload from "./avatar-upload";
 import { releaseAction, updateNoteAction } from "./actions";
 import { updateTrainerNameAction } from "./trainer-actions";
@@ -41,8 +42,9 @@ export default async function CollectionPage() {
 
   if (error) throw new Error(error.message);
 
-  const displayName = (user?.user_metadata?.display_name as string) || "Entrenador/a";
-  const avatarUrl = user?.user_metadata?.avatar_url as string | undefined;
+  const { displayName, avatarUrl } = user
+    ? await trainerIdentity(supabase, user)
+    : { displayName: "Entrenador/a", avatarUrl: null };
   const memberSince = user?.created_at
     ? new Date(user.created_at).toLocaleDateString("es-MX", { month: "long", year: "numeric" })
     : null;
