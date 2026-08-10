@@ -18,10 +18,16 @@ export default async function Nav() {
           <Link href="/pokedex" className="underline">
             Pokédex
           </Link>
+          <Link href="/identify" className="underline">
+            Identificar
+          </Link>
           {user ? (
             <>
               <Link href="/collection" className="underline">
                 Mi colección
+              </Link>
+              <Link href="/chat" className="underline">
+                Chat
               </Link>
               <form action={logout}>
                 <button type="submit" className="underline">
