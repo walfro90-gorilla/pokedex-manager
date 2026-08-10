@@ -143,5 +143,7 @@ async def agent(body: AgentRequest, authorization: str = Header(default="")):
     try:
         return await run_agent(user_jwt, body.history, body.message)
     except httpx.HTTPStatusError as e:
-        log.error("agent upstream error: %s", e)
+        # el body del provider dice POR QUÉ (modelo caído, payload inválido...)
+        body_preview = e.response.text[:300] if e.response is not None else ""
+        log.error("agent upstream error: %s | body: %s", e, body_preview)
         raise HTTPException(502, "Error consultando servicios externos")
