@@ -240,8 +240,11 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       (batería HTTP + 12 flujos browser + MCP con cliente real + /identify vivo).
       Cero bugs. Matriz documentada en docs/QA-TESTING.md (nuevo, linkeado desde
       README sección QA). D14 en DECISIONS (Google OAuth + identidad canónica).
-- [ ] PENDIENTE (pedido del usuario): tour guiado para nuevos usuarios mostrando
-      todas las funcionalidades (siguiente tarea).
+- [x] Tour de bienvenida (welcome-tour.tsx): carousel modal de 9 pasos (una
+      funcionalidad por paso, con link directo), solo usuarios logueados, se
+      muestra una vez (localStorage welcome-tour-done), sin librerías. Montado
+      en layout junto a InstallPrompt. Verificado en prod: aparece con flag
+      limpio, 9 títulos correctos, cierra al final y no reaparece tras reload.
 - [ ] F4 — falta: video Loom ≤5 min, borrar SIGUIENTE-PASOS.md, correo a
       cfernandez@febara.com.mx antes del miércoles mediodía, repo público o
       invitar al evaluador (hoy es PRIVADO)

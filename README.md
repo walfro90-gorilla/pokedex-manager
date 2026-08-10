@@ -127,6 +127,8 @@ python evals/run_evals.py                                     # evals (ai-servic
 - `/quien-es` — juego "¿Quién es ese Pokémon?" como en la serie (silueta + racha)
 - **PWA instalable** con tab bar inferior tipo app en mobile (botón central = cámara)
   y banner de sugerencia de instalación
+- **Tour de bienvenida** para usuarios nuevos: 9 pasos que recorren todas las
+  funcionalidades con acceso directo a cada una (se muestra una sola vez)
 - Responsive mobile-first
 
 **Bonus 1 — Identificación por imagen (LMM)**
