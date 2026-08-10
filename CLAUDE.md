@@ -254,6 +254,13 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       PROTECTED_PATHS de proxy.ts (antes solo /collection y /chat). Verificado
       en prod: 6 rutas anónimas redirigen 307 a /login?redirectTo=..., navbar
       anónimo solo muestra Iniciar sesión/Registrarme, logueado ve todo.
+- [x] Bug de producción cazado y arreglado (2026-08-10): chat fallaba solo en
+      cuentas con historial largo — Groq+llama emite a veces sintaxis de tool
+      malformada y responde 400 tool_use_failed (estocástico, NO era historial
+      corrupto: el replay exacto daba 200). Fix: retry + fallback tool_choice
+      none en _chat_completion; main.py ahora loguea el body del error del
+      provider. Stress test: 5/5 con 12 fallos internos absorbidos. Jamás
+      resetear historial de usuario por esto.
 - [ ] F4 — falta: video (guion listo en la conversación), enviar el borrador de
       Gmail a cfernandez@febara.com.mx antes del miércoles mediodía
 - NOTA sesión: ai-service NO carga .env solo — arrancar con `set -a; source .env; set +a`
