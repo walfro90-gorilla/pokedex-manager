@@ -130,6 +130,29 @@ python evals/run_evals.py                                     # evals (ai-servic
 - Parseo defensivo del output del modelo (fences markdown, bloques `<think>` de modelos
   razonadores, extracción de JSON balanceado)
 
+**Bonus 2 — Servidor MCP (Model Context Protocol)**
+- `ai-service/mcp_server.py` — servidor MCP sobre **stdio** (SDK oficial de Python)
+  que conecta la colección a cualquier cliente MCP (Claude Desktop, Claude Code):
+  las 3 herramientas del agente (`query_collection`, `search_pokeapi`, `add_pokemon`)
+  más la colección completa como **resource** de solo lectura (`collection://mine`)
+- Cero lógica duplicada: importa las mismas implementaciones deterministas del
+  agente (`app/agent.py`) — la fuente de verdad de cada herramienta es una sola
+- Misma postura de seguridad que todo el sistema: el servidor se autentica como un
+  **usuario real** (login contra Supabase Auth, JWT cacheado con renovación) — RLS
+  decide qué ve, sin service key
+- Registro (ejemplo con Claude Code; Claude Desktop usa el mismo comando en su
+  `claude_desktop_config.json`):
+  ```bash
+  claude mcp add pokedex \
+    -e SUPABASE_URL=https://<proyecto>.supabase.co \
+    -e SUPABASE_ANON_KEY=<anon-key> \
+    -e POKEDEX_EMAIL=<email-de-tu-cuenta> -e POKEDEX_PASSWORD=<password> \
+    -- <repo>/ai-service/.venv/bin/python <repo>/ai-service/mcp_server.py
+  ```
+- Distinción honesta: el agente de `/chat` usa function calling estilo OpenAI
+  (loop a mano, ver D3); este servidor habla el **protocolo MCP** real. Son dos
+  mecanismos distintos y el repo demuestra ambos (ver D13)
+
 **Bonus 3 — Asistente con tool calling y análisis de la colección**
 - `/chat` — agente conversacional con 3 herramientas: `query_collection`,
   `search_pokeapi`, `add_pokemon`. Loop de tool calling escrito a mano (~100 líneas,
@@ -140,11 +163,6 @@ python evals/run_evals.py                                     # evals (ai-servic
   ataque?"), comparativas entre Pokémon y sugerencias — siempre vía tools, nunca
   inventando datos
 - Las tools llaman a Supabase con el JWT del usuario → RLS aplica también dentro del agente
-
-**Sobre el Bonus 2 (MCP):** no implementado — lo que existe es function calling estilo
-OpenAI, que es un mecanismo distinto al Model Context Protocol. Antes que un servidor MCP
-a medias, se priorizó core sólido + evals. El diseño previsto (servidor MCP exponiendo la
-colección como resources + tools sobre stdio) queda documentado en `docs/DECISIONS.md`.
 
 ## Evals
 
@@ -174,7 +192,7 @@ futura: upscaling previo o few-shot con ejemplos pixelados.
 
 ## Decisiones y trade-offs
 
-Versión corta (completa en `docs/DECISIONS.md`, D1–D10):
+Versión corta (completa en `docs/DECISIONS.md`, D1–D13):
 
 - **Monorepo TS + Python** — cada lenguaje donde es más fuerte (D1)
 - **Supabase con RLS** en vez de auth artesanal — la seguridad no depende de no
@@ -199,12 +217,17 @@ Versión corta (completa en `docs/DECISIONS.md`, D1–D10):
 - **Capa social sin abrir la colección** — el directorio y los perfiles públicos de
   entrenadores exponen solo datos de exhibición vía funciones `security definer` con
   contrato mínimo; la tabla `collection` y las notas personales siguen tras RLS (D12).
+- **Servidor MCP que reutiliza las tools del agente** — una sola implementación
+  determinista por herramienta, dos mecanismos de exposición (function calling en
+  `/chat`, protocolo MCP para clientes externos); autentica como usuario real,
+  nunca con service key (D13).
 
 ## Estructura
 
 ```
 web/                  Next.js — UI, auth, colección (Server Components/Actions)
 ai-service/app/       FastAPI — main.py (/identify), agent.py (loop+tools), providers.py (cadena LLM)
+ai-service/mcp_server.py  Servidor MCP stdio sobre la colección (bonus 2)
 supabase/schema.sql   Tabla collection + políticas RLS (correr en SQL Editor)
 evals/                Runner + imágenes + resultados
 docs/                 ARCHITECTURE.md, DECISIONS.md (ADR-lite), PLAN.md

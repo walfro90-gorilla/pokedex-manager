@@ -207,8 +207,17 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       login/redirects). Quirk de testing: forms de Server Actions no disparan con
       click/Enter simulados del MCP de Chrome — usar form.requestSubmit() vía
       javascript_tool.
-- [ ] F4 — falta: video Loom ≤5 min, borrar SIGUIENTE-PASOS.md, clone limpio siguiendo
-      README para validar, correo a cfernandez@febara.com.mx antes del miércoles mediodía
+- [x] Bonus 2 MCP (2026-08-10) — ai-service/mcp_server.py: servidor MCP stdio con
+      FastMCP (SDK oficial, dep nueva mcp==1.* en requirements). Reutiliza TOOL_IMPL
+      de agent.py (cero duplicación); autentica como usuario real (login password
+      contra Supabase Auth, JWT cacheado, sin service key — RLS intacto); expone
+      3 tools + resource collection://mine. Smoke test verde con cliente MCP real
+      contra Supabase vivo (tools, resource, add+cleanup en cuenta QA). README
+      (sección Bonus 2 reescrita: ya NO dice "no implementado"), D13 en DECISIONS,
+      bullet en trade-offs. Los 3 bonus del brief ahora cubiertos.
+- [ ] F4 — falta: video Loom ≤5 min, borrar SIGUIENTE-PASOS.md, correo a
+      cfernandez@febara.com.mx antes del miércoles mediodía, repo público o
+      invitar al evaluador (hoy es PRIVADO), cuenta demo en README
 - NOTA sesión: ai-service NO carga .env solo — arrancar con `set -a; source .env; set +a`
   antes de uvicorn (o usar docker compose que sí usa env_file). GROQ_API_KEY real ya
   está en ai-service/.env (gitignored).

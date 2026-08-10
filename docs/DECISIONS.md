@@ -99,9 +99,23 @@ el avatar sube a Storage con políticas por carpeta de usuario. El medallero se
 computa de las filas ya cargadas (cero contadores que mantener). Gamificación con
 datos derivados, no con estado nuevo.
 
+## D13 — Servidor MCP reutilizando las tools del agente (2026-08-10)
+El bonus #2 del brief pide MCP (Model Context Protocol) específicamente — distinto
+del function calling del agente (ver D9). Implementado como servidor **stdio**
+(`ai-service/mcp_server.py`) con el SDK oficial de Python (FastMCP): expone las
+mismas 3 herramientas del agente más la colección como resource de solo lectura
+(`collection://mine`). Decisiones clave: (1) **cero duplicación** — importa
+`TOOL_IMPL` de `app/agent.py`, la lógica determinista de cada herramienta existe
+una sola vez y ambos mecanismos (function calling y MCP) la comparten;
+(2) **misma postura de seguridad** — el servidor se autentica como un usuario real
+(login por password contra Supabase Auth, JWT cacheado con renovación al expirar),
+RLS decide qué ve, sin service key; (3) **stdio y no HTTP** — es el transporte
+estándar para clientes MCP locales (Claude Desktop/Code) y no abre superficie de
+red nueva. Verificado con un cliente MCP real (SDK oficial): initialize,
+list_tools, list_resources, call_tool de las tres herramientas y read_resource
+contra el proyecto Supabase vivo. La distinción honesta de D9 se mantiene en el
+README: `/chat` es function calling, esto es MCP — el repo demuestra ambos.
+
 ## Fuera de alcance (por tiempo, documentado a propósito)
-- MCP server sobre la colección (bonus #2, protocolo específico — distinto del
-  tool-calling que sí está implementado en agent.py, ver D9): diseñado, no
-  implementado — ver README.
 - Tests e2e del frontend; se priorizaron evals de la capa de IA (mayor riesgo).
 - Cache de PokéAPI en DB propia; el cache de fetch de Next.js cubre el caso.
