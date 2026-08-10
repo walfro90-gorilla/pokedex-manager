@@ -76,6 +76,17 @@ saltó limpio a los siguientes providers. Bonus del mismo test en vivo: el tool
 (`user_id default auth.uid()`) — el valor sale del JWT, RLS lo sigue validando, cero
 código nuevo en el servicio.
 
+## D11 — PWA + HTTPS con Caddy y sslip.io (2026-08-10)
+La app es instalable como PWA (manifest tipado de Next + iconos rasterizados de la
+pokébola SVG con un script de Python puro — sin deps de imagen). Chrome exige contexto
+seguro para ofrecer instalación, y el deploy era HTTP sobre IP pelada: se agregó un
+overlay de producción (`docker-compose.prod.yml` + `Caddyfile`) con Caddy como reverse
+proxy y certificados automáticos de Let's Encrypt usando sslip.io (DNS wildcard gratis
+que resuelve <ip-con-guiones>.sslip.io a la IP — sin comprar dominio). El compose base
+queda intacto para la evaluación local. Descartado: service worker con soporte offline
+— Chrome ya no lo exige para instalar, y el shell offline de una app cuyo contenido
+vive en APIs externas aporta poco (documentado como mejora futura).
+
 ## Fuera de alcance (por tiempo, documentado a propósito)
 - MCP server sobre la colección (bonus #2, protocolo específico — distinto del
   tool-calling que sí está implementado en agent.py, ver D9): diseñado, no

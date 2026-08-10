@@ -1,0 +1,11 @@
+# Reverse proxy con HTTPS automático (Let's Encrypt) para el deploy.
+# sslip.io: DNS wildcard gratis — <ip-con-guiones>.sslip.io resuelve a la IP.
+# Uso: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+209-50-54-47.sslip.io {
+	reverse_proxy web:3000
+}
+
+api.209-50-54-47.sslip.io {
+	reverse_proxy ai-service:8000
+}

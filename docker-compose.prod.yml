@@ -1,0 +1,17 @@
+# Overlay de producción: agrega Caddy (HTTPS automático vía Let's Encrypt).
+# El docker-compose.yml base sigue funcionando solo para desarrollo/evaluación local.
+# Uso en el server: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+services:
+  caddy:
+    image: caddy:2-alpine
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [web, ai-service]
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:
