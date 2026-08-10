@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Rubik, Press_Start_2P } from "next/font/google";
 import Nav from "@/app/components/nav";
 import "./globals.css";
@@ -18,6 +18,18 @@ const pixel = Press_Start_2P({
 export const metadata: Metadata = {
   title: "PokéDex Manager",
   description: "Tu colección personal de Pokémon, con IA",
+  appleWebApp: {
+    capable: true,
+    title: "PokéDex",
+    statusBarStyle: "default",
+  },
+  icons: {
+    apple: "/icons/icon-192.png",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#dc0a2d",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

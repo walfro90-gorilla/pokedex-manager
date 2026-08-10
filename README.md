@@ -4,7 +4,10 @@ Aplicación full-stack para gestionar una colección personal de Pokémon, con c
 identificación de Pokémon por imagen (modelo multimodal) y un asistente conversacional
 con tool calling sobre la colección del usuario.
 
-**Demo en vivo:** http://[IP del VPS]:3000 · **AI service:** http://[IP del VPS]:8000/docs
+**Demo en vivo:** https://ip-del-vps.sslip.io · **AI service:** https://api.ip-del-vps.sslip.io/docs
+
+Instalable como **PWA** (Chrome/Edge: ícono de instalar en la barra de direcciones;
+móvil: "Agregar a pantalla de inicio").
 
 ![PokéDex Manager](docs/screenshot.jpg)
 
@@ -172,7 +175,10 @@ Versión corta (completa en `docs/DECISIONS.md`, D1–D10):
 - **Deploy en un VPS con el mismo docker-compose del repo** en vez de Vercel — evita
   partir la infra en dos y el problema de mixed content (frontend HTTPS llamando a un
   ai-service HTTP); el mismo `docker compose up` que corre el evaluador es el que corre
-  producción. Trade-off aceptado: IP pelada sin TLS, suficiente para una demo evaluable.
+  producción. HTTPS con Caddy + sslip.io (certs automáticos de Let's Encrypt, sin
+  comprar dominio) — ver `docker-compose.prod.yml` + `Caddyfile` (D11).
+- **PWA instalable** — manifest + iconos generados de la pokébola SVG; requiere el
+  HTTPS anterior (Chrome no ofrece instalación en contextos no seguros).
 
 ## Estructura
 
