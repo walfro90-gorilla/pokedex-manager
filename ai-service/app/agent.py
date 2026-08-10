@@ -152,18 +152,37 @@ TOOL_IMPL = {
 async def _chat_completion(messages: list[dict]) -> dict:
     """Llamada de texto a Groq (primario). El fallback de texto reutilizaría
     providers.py; se mantiene simple aquí porque el agente necesita
-    tool-calling nativo, y Groq lo soporta con el formato OpenAI."""
+    tool-calling nativo, y Groq lo soporta con el formato OpenAI.
+
+    Quirk conocido de Groq+llama: con historiales largos el modelo a veces
+    emite la llamada de herramienta con sintaxis cruda malformada
+    (`<function=...>`) y Groq rechaza la generación completa con
+    400 `tool_use_failed`. Es estocástico: se reintenta, y si persiste se
+    responde sin tools ese turno — degradar es mejor que un 502 al usuario.
+    """
     key = os.environ["GROQ_API_KEY"]
     model = os.getenv("GROQ_TEXT_MODEL", "llama-3.3-70b-versatile")
+    url = "https://api.groq.com/openai/v1/chat/completions"
+    headers = {"Authorization": f"Bearer {key}"}
+    payload = {"model": model, "messages": messages,
+               "tools": TOOLS, "tool_choice": "auto", "temperature": 0.3}
+
     async with httpx.AsyncClient(timeout=TIMEOUT) as client:
-        r = await client.post(
-            "https://api.groq.com/openai/v1/chat/completions",
-            headers={"Authorization": f"Bearer {key}"},
-            json={"model": model, "messages": messages,
-                  "tools": TOOLS, "tool_choice": "auto", "temperature": 0.3},
-        )
-    r.raise_for_status()
-    return r.json()["choices"][0]["message"]
+        for attempt in (1, 2):
+            r = await client.post(url, headers=headers, json=payload)
+            if r.status_code == 400 and "tool_use_failed" in r.text:
+                log.warning("groq tool_use_failed (intento %d), reintentando", attempt)
+                continue
+            r.raise_for_status()
+            return r.json()["choices"][0]["message"]
+
+        # Persistió: último recurso con tools prohibidas (tool_choice none —
+        # el schema se conserva por si el loop ya metió mensajes role:tool)
+        log.warning("groq tool_use_failed persistente; respondiendo sin tools")
+        r = await client.post(url, headers=headers,
+                              json={**payload, "tool_choice": "none"})
+        r.raise_for_status()
+        return r.json()["choices"][0]["message"]
 
 
 async def run_agent(user_jwt: str, history: list[dict], user_message: str) -> dict:
