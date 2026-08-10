@@ -215,9 +215,15 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       contra Supabase vivo (tools, resource, add+cleanup en cuenta QA). README
       (sección Bonus 2 reescrita: ya NO dice "no implementado"), D13 en DECISIONS,
       bullet en trade-offs. Los 3 bonus del brief ahora cubiertos.
+- [x] Chips bonus 3 en /chat (recomendaciones/comparativas/curiosidades/análisis)
+      + cuenta demo QA1 en README (pokedex-qa-01@e2etest.dev — evaluador entra sin
+      confirmar email). Redeploy a UpCloud y verificado en prod: chip de
+      recomendación end-to-end (query_collection con cards del equipo real +
+      recomendación razonada de Gengar). Nota: chips solo en chat vacío — QA1
+      tenía historial, hubo que borrarlo para verlos.
 - [ ] F4 — falta: video Loom ≤5 min, borrar SIGUIENTE-PASOS.md, correo a
       cfernandez@febara.com.mx antes del miércoles mediodía, repo público o
-      invitar al evaluador (hoy es PRIVADO), cuenta demo en README
+      invitar al evaluador (hoy es PRIVADO)
 - NOTA sesión: ai-service NO carga .env solo — arrancar con `set -a; source .env; set +a`
   antes de uvicorn (o usar docker compose que sí usa env_file). GROQ_API_KEY real ya
   está en ai-service/.env (gitignored).
