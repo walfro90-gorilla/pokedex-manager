@@ -221,6 +221,21 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       recomendación end-to-end (query_collection con cards del equipo real +
       recomendación razonada de Gengar). Nota: chips solo en chat vacío — QA1
       tenía historial, hubo que borrarlo para verlos.
+- [x] Site URL a https verificado (correo real trae redirect_to=https://209-50-54-47
+      .sslip.io); cuentas de prueba de verificación borradas de auth.users.
+- [x] Google OAuth end-to-end: botón "Continuar con Google" en /login y /register
+      (Server Action + /auth/callback PKCE). Fixes reales: (1) detrás de Caddy,
+      request.url trae host interno — el callback usa x-forwarded-host/proto;
+      (2) Google VINCULA por email verificado y sobreescribe
+      user_metadata.avatar_url con la foto de Google en cada login → profiles es
+      ahora la fuente canónica de nombre/avatar (lib/trainer.ts, banner y
+      colección la usan; metadata solo fallback) y el callback hace upsert de
+      profiles con ignoreDuplicates (primer login Google = aparece en /trainers).
+      Verificado en prod: banner, colección y directorio muestran el MISMO avatar.
+      Nota: Google no acepta clicks simulados en su consent (el usuario clickeó).
+- [ ] Template de email branded (supabase/email-confirm-signup.html) queda en el
+      repo pero NO aplicado: Supabase hosted exige SMTP custom para editar
+      templates — decisión del usuario no activarlo. Documentado, no bloquea.
 - [ ] F4 — falta: video Loom ≤5 min, borrar SIGUIENTE-PASOS.md, correo a
       cfernandez@febara.com.mx antes del miércoles mediodía, repo público o
       invitar al evaluador (hoy es PRIVADO)
