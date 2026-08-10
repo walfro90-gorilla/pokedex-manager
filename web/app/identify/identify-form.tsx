@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import TypeBadge from "@/app/components/type-badge";
 import { captureIdentifiedAction } from "./actions";
 
 type IdentifyResult = {
@@ -57,61 +58,78 @@ export default function IdentifyForm() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <input
-        type="file"
-        accept="image/jpeg,image/png,image/webp"
-        onChange={handleFileChange}
-        className="text-sm"
-      />
-
-      {preview && (
-        // eslint-disable-next-line @next/next/no-img-element -- blob: preview local, no aplica next/image
-        <img src={preview} alt="preview" className="h-48 w-48 rounded-md object-cover" />
-      )}
+    <div className="flex flex-col gap-5">
+      <label className="poke-card flex cursor-pointer flex-col items-center gap-3 border-dashed p-8 text-center">
+        <input
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          onChange={handleFileChange}
+          className="hidden"
+        />
+        {preview ? (
+          // eslint-disable-next-line @next/next/no-img-element -- blob: preview local
+          <img src={preview} alt="preview" className="h-44 w-44 rounded-xl object-cover" />
+        ) : (
+          <>
+            <span className="text-4xl">📷</span>
+            <span className="text-sm font-medium text-muted">
+              Toca para elegir una imagen (JPG, PNG o WebP, máx 5 MB)
+            </span>
+          </>
+        )}
+      </label>
 
       <button
         type="button"
         onClick={handleIdentify}
         disabled={!file || loading}
-        className="w-fit rounded-md bg-black px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+        className="self-center rounded-full bg-poke-red px-8 py-2.5 text-sm font-bold text-white transition-colors hover:bg-poke-red-dark disabled:opacity-50"
       >
         {loading ? "Identificando..." : "Identificar"}
       </button>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-center text-sm text-red-600">{error}</p>}
 
       {result && !result.found && (
-        <p className="text-sm text-gray-600">
+        <p className="text-center text-sm text-muted">
           No se reconoció ningún Pokémon. {result.reasoning}
         </p>
       )}
 
       {result?.found && (
-        <div className="flex items-center gap-4 rounded-lg border border-gray-200 p-4">
+        <div className="poke-card flex flex-col items-center gap-4 p-5 sm:flex-row">
           {result.sprite_url && (
             <Image
               src={result.sprite_url}
               alt={result.name ?? ""}
-              width={80}
-              height={80}
+              width={110}
+              height={110}
               unoptimized
+              className="drop-shadow-sm"
             />
           )}
-          <div className="flex-1">
-            <p className="font-medium capitalize">{result.name}</p>
-            <p className="text-xs text-gray-500">
-              confianza {(result.confidence * 100).toFixed(0)}% · vía {result.provider}
+          <div className="flex-1 text-center sm:text-left">
+            <p className="pixel text-[9px] text-muted">
+              #{String(result.pokemon_id).padStart(4, "0")}
             </p>
-            <p className="mt-1 text-xs text-gray-600">{result.reasoning}</p>
+            <p className="text-xl font-black capitalize">{result.name}</p>
+            <div className="mt-1.5 flex justify-center gap-1.5 sm:justify-start">
+              {result.types.map((t) => (
+                <TypeBadge key={t} type={t} size="sm" />
+              ))}
+            </div>
+            <p className="mt-2 text-xs text-muted">
+              Confianza {(result.confidence * 100).toFixed(0)}% · vía {result.provider}
+            </p>
+            <p className="mt-1 text-xs text-muted">{result.reasoning}</p>
           </div>
           <form action={captureIdentifiedAction}>
             <input type="hidden" name="name" value={result.name ?? ""} />
             <button
               type="submit"
-              className="rounded-md bg-black px-3 py-2 text-xs font-medium text-white"
+              className="rounded-full bg-poke-red px-5 py-2.5 text-xs font-bold text-white transition-colors hover:bg-poke-red-dark"
             >
-              Agregar a mi colección
+              ¡Capturar!
             </button>
           </form>
         </div>
