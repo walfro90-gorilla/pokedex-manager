@@ -186,6 +186,27 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       (ya cubierto). Deliberado: un tap = un escaneo, NO detección continua (cada
       frame = llamada al LLM de visión). Desplegado; falta prueba real en teléfono
       del usuario (el permiso de cámara es diálogo nativo, no automatizable).
+- [x] Lote grande de features (2026-08-10, madrugada): tab bar inferior tipo app con
+      botón central de cámara; sonidos (cries) + sprites animados + movimientos como
+      botones con detalle (fetch a /move) + flechas prev/next en el detalle; confetti
+      al capturar + redirect a la ficha (?captured=1); perfil de entrenador en
+      /collection (nombre en user_metadata, foto a Storage bucket avatars con RLS por
+      carpeta, galería o cámara) + medallero de 8 medallas derivado de la colección;
+      listado del equipo estilo Game Boy; comunidad /trainers (tabla profiles pública
+      + funciones security definer trainer_directory/trainer_pokemons — collection
+      NUNCA se abrió, notas privadas, ver D12) + perfil público /trainers/[id];
+      juego /quien-es; banner de entrenador con pokébolas en /pokedex. Migraciones
+      aplicadas: chat_messages_history, avatars_storage_bucket,
+      trainer_profiles_directory, trainer_public_profile. Cuenta demo "Gary"
+      (walfre.am+gary@gmail.com / GaryOak151!) con 3 pokémon.
+- [x] HARD TESTING completo contra producción https: 12 flujos verificados en browser
+      real (detalle con sprite animado/grito/movimientos, captura→confetti→redirect,
+      colección GB + medallero 6/8 correcto, avatar upload a Storage + write-through,
+      directorio con 3 entrenadores, perfil público de Gary con medallero 4/8, juego
+      con racha, chat persistente CROSS-DEVICE, banner con pokébolas, flechas,
+      login/redirects). Quirk de testing: forms de Server Actions no disparan con
+      click/Enter simulados del MCP de Chrome — usar form.requestSubmit() vía
+      javascript_tool.
 - [ ] F4 — falta: video Loom ≤5 min, borrar SIGUIENTE-PASOS.md, clone limpio siguiendo
       README para validar, correo a cfernandez@febara.com.mx antes del miércoles mediodía
 - NOTA sesión: ai-service NO carga .env solo — arrancar con `set -a; source .env; set +a`

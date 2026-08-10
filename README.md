@@ -107,14 +107,26 @@ python evals/run_evals.py                                     # evals (ai-servic
 
 **Core**
 - Registro / login / logout (Supabase Auth, Server Actions, middleware de rutas protegidas)
-- `/pokedex` — lista paginada con búsqueda por nombre (PokéAPI, cache de 24h)
-- `/pokedex/[name]` — detalle con sprite oficial, tipos y stats; capturar con un clic
-- `/collection` — colección personal persistente: soltar, editar nota; **solo tuya** (RLS)
+- `/pokedex` — lista paginada con búsqueda, tipos coloreados y banner del entrenador
+  (pokébolas del equipo)
+- `/pokedex/[name]` — detalle con sprite **animado**, grito (audio), barras de stats,
+  **movimientos como botones** (tocar = tipo/poder/precisión/PP desde PokéAPI) y
+  flechas anterior/siguiente
+- `/collection` — perfil de entrenador (nombre + foto desde galería o cámara,
+  **medallero** de 8 medallas por logros) y listado del equipo **estilo Game Boy**
+  (sprites pixelados, barra de PS); soltar, editar nota; **solo tuya** (RLS)
+- Capturar dispara **confetti** y te lleva a la ficha del Pokémon atrapado
+- `/trainers` — comunidad: directorio público de entrenadores y perfil de cada uno
+  (foto, medallero y equipo — las notas personales siguen privadas, ver D12)
+- `/quien-es` — juego "¿Quién es ese Pokémon?" como en la serie (silueta + racha)
+- **PWA instalable** con tab bar inferior tipo app en mobile (botón central = cámara)
+  y banner de sugerencia de instalación
 - Responsive mobile-first
 
 **Bonus 1 — Identificación por imagen (LMM)**
-- `/identify` — sube una foto (carta, juguete, screenshot, dibujo) → el modelo de visión
-  la identifica → verificación contra PokéAPI → agregar a la colección en un clic
+- `/identify` — sube una foto o usa el **Modo Pokédex**: cámara del dispositivo con
+  visor y obturador, como una Pokédex real → el modelo de visión identifica →
+  verificación contra PokéAPI → capturar en un clic
 - Parseo defensivo del output del modelo (fences markdown, bloques `<think>` de modelos
   razonadores, extracción de JSON balanceado)
 
@@ -184,6 +196,9 @@ Versión corta (completa en `docs/DECISIONS.md`, D1–D10):
   comprar dominio) — ver `docker-compose.prod.yml` + `Caddyfile` (D11).
 - **PWA instalable** — manifest + iconos generados de la pokébola SVG; requiere el
   HTTPS anterior (Chrome no ofrece instalación en contextos no seguros).
+- **Capa social sin abrir la colección** — el directorio y los perfiles públicos de
+  entrenadores exponen solo datos de exhibición vía funciones `security definer` con
+  contrato mínimo; la tabla `collection` y las notas personales siguen tras RLS (D12).
 
 ## Estructura
 
