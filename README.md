@@ -107,6 +107,11 @@ python evals/run_evals.py                                     # evals (ai-servic
 > **Confirmación de email activa** (decisión D8): una cuenta nueva no puede iniciar
 > sesión hasta confirmar el correo. Usar un correo real o alias `+tag@gmail.com`.
 
+> **Login con Google es opcional**: el botón existe, pero en una instancia propia
+> requiere habilitar el provider Google en Supabase (Auth → Providers) con un
+> OAuth client de Google Cloud. Sin esa config, el login con correo funciona
+> normal y el botón solo mostrará un error si se usa.
+
 ## Funcionalidades
 
 **Core**
