@@ -37,10 +37,11 @@ curl -F "file=@pikachu.jpg" localhost:8000/identify     # probar /identify direc
 python evals/run_evals.py
 ```
 
-**web** (aún no scaffolded — primer paso de F1):
+**web** (scaffolded con create-next-app, sin src/, App Router):
 ```
-npx create-next-app@latest web --typescript --tailwind --app --eslint
-cd web && npm run dev / npm run build / npm run lint
+cd web && npm run dev       # :3000
+cd web && npm run build
+cd web && npm run lint
 ```
 
 **todo junto:**
@@ -48,8 +49,8 @@ cd web && npm run dev / npm run build / npm run lint
 docker compose up
 ```
 
-No hay suite de tests para web todavía (F1 sin empezar); no inventar comandos de test que
-no existen — verificar `web/package.json` una vez creado.
+No hay suite de tests para web todavía (F1 apenas arrancando); no inventar comandos de
+test que no existen — verificar `web/package.json` antes de asumir uno nuevo.
 
 ## ai-service — mapa de código
 
@@ -113,6 +114,8 @@ Ver `web/.env.example` y `ai-service/.env.example`. NUNCA commitear `.env*` real
 Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria entre sesiones):
 
 - [x] Scaffold: ai-service completo (providers/agent/main verificados), schema, compose, evals
+- [x] Repo en GitHub (walfro90-gorilla/pokedex-manager), primer commit hecho
+- [x] web/ scaffolded (create-next-app, TS+Tailwind+App Router+ESLint, lint y build OK)
 - [ ] F1 — Core web (auth + pokedex + collection) — ver docs/PLAN.md
 - [ ] F2 — Integración IA en frontend (upload + chat) + evals con imágenes reales
 - [ ] F3 — Deploy (Vercel + Cloud Run/Railway) 
