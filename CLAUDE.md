@@ -236,6 +236,12 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
 - [ ] Template de email branded (supabase/email-confirm-signup.html) queda en el
       repo pero NO aplicado: Supabase hosted exige SMTP custom para editar
       templates — decisión del usuario no activarlo. Documentado, no bloquea.
+- [x] Hard testing pase 2 (2026-08-10): 21 checks todo verde contra producción
+      (batería HTTP + 12 flujos browser + MCP con cliente real + /identify vivo).
+      Cero bugs. Matriz documentada en docs/QA-TESTING.md (nuevo, linkeado desde
+      README sección QA). D14 en DECISIONS (Google OAuth + identidad canónica).
+- [ ] PENDIENTE (pedido del usuario): tour guiado para nuevos usuarios mostrando
+      todas las funcionalidades (siguiente tarea).
 - [ ] F4 — falta: video Loom ≤5 min, borrar SIGUIENTE-PASOS.md, correo a
       cfernandez@febara.com.mx antes del miércoles mediodía, repo público o
       invitar al evaluador (hoy es PRIVADO)

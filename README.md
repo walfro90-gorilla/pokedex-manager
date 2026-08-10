@@ -110,7 +110,9 @@ python evals/run_evals.py                                     # evals (ai-servic
 ## Funcionalidades
 
 **Core**
-- Registro / login / logout (Supabase Auth, Server Actions, middleware de rutas protegidas)
+- Registro / login / logout (Supabase Auth, Server Actions, middleware de rutas
+  protegidas) + **login con Google** (OAuth PKCE, callback propio; el perfil
+  público se crea solo en el primer login — ver D14)
 - `/pokedex` — lista paginada con búsqueda, tipos coloreados y banner del entrenador
   (pokébolas del equipo)
 - `/pokedex/[name]` — detalle con sprite **animado**, grito (audio), barras de stats,
@@ -168,6 +170,13 @@ python evals/run_evals.py                                     # evals (ai-servic
   inventando datos
 - Las tools llaman a Supabase con el JWT del usuario → RLS aplica también dentro del agente
 
+## QA
+
+Todo lo anterior está verificado contra el deploy de producción con dos pases de
+hard testing en browser real (21 checks el último: flujos completos de captura,
+chat con tools, comunidad, juego, OAuth, RLS anónimo, MCP con cliente real) —
+matriz completa y quirks conocidos en [`docs/QA-TESTING.md`](docs/QA-TESTING.md).
+
 ## Evals
 
 Un agente sin evals es una demo. `evals/run_evals.py` corre 10 casos contra `/identify`
@@ -196,7 +205,7 @@ futura: upscaling previo o few-shot con ejemplos pixelados.
 
 ## Decisiones y trade-offs
 
-Versión corta (completa en `docs/DECISIONS.md`, D1–D13):
+Versión corta (completa en `docs/DECISIONS.md`, D1–D14):
 
 - **Monorepo TS + Python** — cada lenguaje donde es más fuerte (D1)
 - **Supabase con RLS** en vez de auth artesanal — la seguridad no depende de no
@@ -225,6 +234,10 @@ Versión corta (completa en `docs/DECISIONS.md`, D1–D13):
   determinista por herramienta, dos mecanismos de exposición (function calling en
   `/chat`, protocolo MCP para clientes externos); autentica como usuario real,
   nunca con service key (D13).
+- **`profiles` como identidad canónica del entrenador** — el login con Google
+  sobreescribe `user_metadata` con la foto de Google en cada inicio de sesión,
+  así que nombre/foto visibles salen siempre de `profiles` (app-owned) con
+  metadata solo de fallback (D14).
 
 ## Estructura
 
@@ -234,6 +247,6 @@ ai-service/app/       FastAPI — main.py (/identify), agent.py (loop+tools), pr
 ai-service/mcp_server.py  Servidor MCP stdio sobre la colección (bonus 2)
 supabase/schema.sql   Tabla collection + políticas RLS (correr en SQL Editor)
 evals/                Runner + imágenes + resultados
-docs/                 ARCHITECTURE.md, DECISIONS.md (ADR-lite), PLAN.md
+docs/                 ARCHITECTURE.md, DECISIONS.md (ADR-lite), PLAN.md, QA-TESTING.md
 docker-compose.yml    Todo junto
 ```
