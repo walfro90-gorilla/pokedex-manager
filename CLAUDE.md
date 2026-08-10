@@ -161,6 +161,14 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       cards de pokémon (datos de tools del agente) y memoria persistente en DB
       (tabla chat_messages + RLS, migración chat_messages_history aplicada).
       Verificado local y redeploy a UpCloud con el rediseño vivo.
+- [x] Responsive 375px verificado por el usuario (ojos reales, devtools móvil)
+- [x] PWA instalable (D11): manifest + iconos pokébola + HTTPS en el deploy vía Caddy +
+      sslip.io (docker-compose.prod.yml overlay). URLs nuevas de producción:
+      https://209-50-54-47.sslip.io (web) y https://api.209-50-54-47.sslip.io (ai).
+      Los puertos HTTP :3000/:8000 siguen abiertos como fallback.
+- [ ] PENDIENTE: Site URL de Supabase → https://209-50-54-47.sslip.io (dashboard manual,
+      hoy apunta a http://209.50.54.47:3000 — los correos de confirmación siguen
+      funcionando pero aterrizan en la versión http)
 - [ ] F4 — falta: video Loom ≤5 min, borrar SIGUIENTE-PASOS.md, clone limpio siguiendo
       README para validar, correo a cfernandez@febara.com.mx antes del miércoles mediodía
 - NOTA sesión: ai-service NO carga .env solo — arrancar con `set -a; source .env; set +a`
