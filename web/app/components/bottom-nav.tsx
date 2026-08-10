@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { logout } from "@/app/logout/actions";
 
 // Tab bar inferior tipo app — solo mobile (sm:hidden). El botón central
-// abre /identify (Modo Pokédex con cámara).
+// abre /identify (Modo Pokédex con cámara). Cerrar sesión vive en el
+// perfil del entrenador (Mi colección), no aquí.
 
 function Icon({ d, active }: { d: string; active: boolean }) {
   return (
@@ -30,7 +30,8 @@ const ICONS = {
   collection: "M12 3a9 9 0 0 1 9 9H3a9 9 0 0 1 9-9zM3 12a9 9 0 0 0 18 0M9.5 12a2.5 2.5 0 0 0 5 0",
   chat: "M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5z",
   login: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3",
-  logout: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9",
+  trainers:
+    "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
 };
 
 function Tab({
@@ -111,20 +112,28 @@ export default function BottomNav({ authed }: { authed: boolean }) {
         {authed ? (
           <>
             <Tab href="/chat" icon="chat" label="Chat" active={pathname.startsWith("/chat")} />
-            <form action={logout} className="flex flex-1 flex-col items-center">
-              <button type="submit" className="flex flex-col items-center gap-0.5 py-2">
-                <Icon d={ICONS.logout} active={false} />
-                <span className="text-[10px] font-semibold text-muted">Salir</span>
-              </button>
-            </form>
+            <Tab
+              href="/trainers"
+              icon="trainers"
+              label="Entrenadores"
+              active={pathname.startsWith("/trainers")}
+            />
           </>
         ) : (
-          <Tab
-            href="/register"
-            icon="collection"
-            label="Registro"
-            active={pathname.startsWith("/register")}
-          />
+          <>
+            <Tab
+              href="/trainers"
+              icon="trainers"
+              label="Entrenadores"
+              active={pathname.startsWith("/trainers")}
+            />
+            <Tab
+              href="/register"
+              icon="collection"
+              label="Registro"
+              active={pathname.startsWith("/register")}
+            />
+          </>
         )}
       </div>
     </nav>
