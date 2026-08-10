@@ -133,6 +133,16 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
 - [x] Revisión de alineación contra el brief oficial del cliente (D9 en DECISIONS.md):
       deploy bajado de AC bloqueante a stretch goal; bonus MCP (#2) reafirmado como
       protocolo específico, distinto del tool-calling ya implementado en agent.py
-- [ ] F2 — Integración IA en frontend (upload + chat) + evals con imágenes reales
+- [x] F2 — /identify (upload+preview+card+captura) y /chat (history+JWT+traza de tools)
+      verificados en browser end-to-end contra el ai-service vivo. Fixes en ai-service
+      forzados por deprecación de Groq (D10): default de visión a qwen/qwen3.6-27b,
+      reasoning_effort=none, strip de <think> en el parser. Migración aplicada:
+      user_id default auth.uid() (el tool add_pokemon del agente insertaba sin user_id).
+- [x] F2 — evals: 10 casos en 3 dificultades, 8/10 (evals/RESULTS.txt). Fallan solo
+      sprites pixelados de 96px (mewtwo→persian/meowth, jigglypuff→clefairy) —
+      documentar como limitación conocida en README.
 - [ ] F3 — Deploy (stretch, no bloqueante — ver D9)
 - [ ] F4 — README final + video + entrega a cfernandez@febara.com.mx
+- NOTA sesión: ai-service NO carga .env solo — arrancar con `set -a; source .env; set +a`
+  antes de uvicorn (o usar docker compose que sí usa env_file). GROQ_API_KEY real ya
+  está en ai-service/.env (gitignored).

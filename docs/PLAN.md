@@ -18,15 +18,20 @@ responsive pass (⚠️ pendiente confirmar visualmente a 375px — implementado
 mobile-first pero sin verificación real en browser, ver Estado actual en CLAUDE.md)
 → (stretch) deploy.
 
-## F2 — IA en frontend (martes) — TODO
+## F2 — IA en frontend (martes) — CASI LISTO (adelantado)
 **AC:** subir una foto de un Pokémon lo identifica y permite agregarlo en 2 clics;
 el chat responde preguntas sobre MI colección usando tools (verificable en la traza);
 evals corren con ≥10 imágenes y el resultado queda en el README. Deploy del
 ai-service es stretch, no bloqueante.
 
-Tareas: componente upload+preview → integrar /identify → card de resultado con CTA →
-chat UI con history en estado → integrar /agent con JWT de sesión → llenar
-evals/images + CASES → correr evals → (stretch) deploy ai-service → CORS/env de prod.
+Tareas: componente upload+preview ✅ → integrar /identify ✅ → card de resultado con
+CTA ✅ → chat UI con history en estado ✅ → integrar /agent con JWT de sesión ✅ →
+llenar evals/images + CASES ✅ → correr evals ✅ (8/10, RESULTS.txt; fallan solo
+sprites pixelados 96px — documentar en README) → (stretch) deploy ai-service →
+CORS/env de prod (CORS ya configurable vía CORS_ORIGINS).
+
+Todo verificado en browser real: upload→identifica pikachu (100% groq)→captura
+autenticada; chat responde con datos reales de la colección + traza de tools.
 
 ## F3+F4 — Entrega (miércoles) — TODO
 **AC:** un evaluador clona el repo, sigue el README y lo levanta con docker compose
