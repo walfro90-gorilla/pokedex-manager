@@ -89,7 +89,45 @@ const SUGGESTIONS = [
   "Agrega a eevee a mi colección",
 ];
 
-export default function ChatWindow({ initialMessages }: { initialMessages: StoredMessage[] }) {
+export type TeamMate = {
+  name: string;
+  types: string[];
+  stats: Record<string, number>;
+};
+
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
+// Sugerencias contextuales según el equipo actual — visibles aunque haya
+// historial, encima del input.
+function teamSuggestions(team: TeamMate[]): string[] {
+  if (team.length === 0) {
+    return [
+      "¿Cómo empiezo mi colección?",
+      "Busca a pikachu",
+      "Agrega a eevee a mi colección",
+    ];
+  }
+  const byAttack = [...team].sort(
+    (a, b) => (b.stats?.attack ?? 0) - (a.stats?.attack ?? 0),
+  );
+  const strongest = byAttack[0];
+  const out = [`¿Qué Pokémon complementaría a ${cap(strongest.name)} en mi equipo?`];
+  if (team.length >= 2) {
+    out.push(`Compara a ${cap(team[0].name)} y ${cap(team[1].name)}`);
+  } else {
+    out.push(`Cuéntame una curiosidad de ${cap(team[0].name)}`);
+  }
+  out.push("¿Qué tipo le falta a mi equipo?");
+  return out;
+}
+
+export default function ChatWindow({
+  initialMessages,
+  team = [],
+}: {
+  initialMessages: StoredMessage[];
+  team?: TeamMate[];
+}) {
   const [messages, setMessages] = useState<StoredMessage[]>(initialMessages);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -218,6 +256,22 @@ export default function ChatWindow({ initialMessages }: { initialMessages: Store
       </div>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
+
+      {/* Sugerencias según el equipo — siempre a la mano, aun con historial */}
+      {messages.length > 0 && !loading && (
+        <div className="flex gap-2 overflow-x-auto pb-1">
+          {teamSuggestions(team).map((s) => (
+            <button
+              key={s}
+              type="button"
+              onClick={() => sendMessage(s)}
+              className="shrink-0 rounded-full border-2 border-gray-200 bg-surface px-3 py-1.5 text-xs font-medium text-muted transition-colors hover:border-poke-red hover:text-poke-red"
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      )}
 
       <form
         onSubmit={(e) => {
