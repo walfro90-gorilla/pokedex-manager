@@ -45,7 +45,9 @@ async def _groq_vision(image_b64: str, mime: str, prompt: str) -> LLMResult:
     key = os.getenv("GROQ_API_KEY")
     if not key:
         raise ProviderError("GROQ_API_KEY no configurada")
-    model = os.getenv("GROQ_VISION_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct")
+    # Default actualizado 2026-08-09: Groq retiró llama-4-scout; qwen3.6-27b es el
+    # modelo con visión vigente (razonador — main.py ya filtra sus bloques <think>).
+    model = os.getenv("GROQ_VISION_MODEL", "qwen/qwen3.6-27b")
     async with httpx.AsyncClient(timeout=TIMEOUT) as client:
         r = await client.post(
             "https://api.groq.com/openai/v1/chat/completions",

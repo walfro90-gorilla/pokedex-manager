@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import re
 
 import httpx
@@ -30,9 +31,14 @@ log = logging.getLogger("main")
 
 app = FastAPI(title="PokéDex AI Service", version="1.0.0")
 
+# CORS_ORIGINS: lista separada por comas. Default cubre el puerto estándar de
+# `next dev`; en dev con puertos alternos (ej. 3000 ocupado) o en prod (dominio
+# de Vercel) se agrega vía env sin tocar código.
+_cors_origins = [o.strip() for o in os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # en prod: dominio de Vercel vía env
+    allow_origins=_cors_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -61,8 +67,11 @@ class IdentifyResponse(BaseModel):
 
 def _parse_model_json(text: str) -> dict:
     """Los modelos a veces envuelven el JSON en ```json ... ``` o agregan texto.
-    Estrategia: strip de fences -> parse; si falla, extraer el primer {...} balanceado."""
-    clean = re.sub(r"```(?:json)?|```", "", text).strip()
+    Estrategia: strip de bloques <think> (modelos razonadores tipo qwen3, que citan
+    el formato JSON DENTRO del razonamiento y rompen la extracción por regex) ->
+    strip de fences -> parse; si falla, extraer el primer {...} balanceado."""
+    clean = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL)
+    clean = re.sub(r"```(?:json)?|```", "", clean).strip()
     try:
         return json.loads(clean)
     except json.JSONDecodeError:
