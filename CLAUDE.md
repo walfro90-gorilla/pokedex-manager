@@ -147,10 +147,12 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       Verificado en browser contra el deploy: login, colección, chat con tools. Los .env
       del server tienen NEXT_PUBLIC_AI_SERVICE_URL y CORS_ORIGINS apuntando a la IP.
       Redeploy = rsync + docker compose build + up -d en el server.
-- [ ] PENDIENTE deploy: Site URL de Supabase Auth sigue en localhost:3000 — los correos
-      de confirmación de cuentas nuevas apuntan mal. Cambiar en dashboard: Authentication
-      → URL Configuration → Site URL = http://209.50.54.47:3000 (acción manual del usuario;
-      el MCP de Supabase quedó conectado a otro proyecto).
+- [x] Site URL de Supabase Auth corregido a http://209.50.54.47:3000 (dashboard, manual).
+      Verificado: correo de confirmación nuevo redirige a la IP del server.
+- [x] RLS verificado con 2 cuentas (AC de F1): QA2 no ve filas de QA1; insert con
+      user_id ajeno (spoof) rechazado 403 por policy; insert propio vía default
+      auth.uid() OK; anon sin JWT ve []. Cuentas: pokedex-qa-01@e2etest.dev y
+      walfre.am+pokedexqa2@gmail.com (confirmada por correo real).
 - [x] F4 (parcial) — README.md final escrito (arquitectura, setup, env vars, evals 8/10,
       D1-D10 condensadas, bonus con distinción honesta MCP vs tool-calling, screenshot
       del deploy en docs/screenshot.jpg)
