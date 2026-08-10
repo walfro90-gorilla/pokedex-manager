@@ -118,10 +118,15 @@ python evals/run_evals.py                                     # evals (ai-servic
 - Parseo defensivo del output del modelo (fences markdown, bloques `<think>` de modelos
   razonadores, extracción de JSON balanceado)
 
-**Bonus 3 — Asistente con tool calling**
+**Bonus 3 — Asistente con tool calling y análisis de la colección**
 - `/chat` — agente conversacional con 3 herramientas: `query_collection`,
   `search_pokeapi`, `add_pokemon`. Loop de tool calling escrito a mano (~100 líneas,
-  sin frameworks — ver D3), traza de tools visible en la UI
+  sin frameworks — ver D3), traza de tools visible en la UI, historial persistente
+  (tabla `chat_messages` con RLS) y cards visuales de Pokémon dentro de la conversación
+- Cubre (parcialmente) el análisis inteligente del bonus 3: responde preguntas
+  analíticas sobre TU colección con datos reales ("¿cuál de los míos tiene más
+  ataque?"), comparativas entre Pokémon y sugerencias — siempre vía tools, nunca
+  inventando datos
 - Las tools llaman a Supabase con el JWT del usuario → RLS aplica también dentro del agente
 
 **Sobre el Bonus 2 (MCP):** no implementado — lo que existe es function calling estilo
