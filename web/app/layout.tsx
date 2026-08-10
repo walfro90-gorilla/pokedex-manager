@@ -1,29 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Rubik, Press_Start_2P } from "next/font/google";
 import Nav from "@/app/components/nav";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const rubik = Rubik({
+  variable: "--font-rubik",
   subsets: ["latin"],
+  weight: ["400", "500", "700", "900"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const pixel = Press_Start_2P({
+  variable: "--font-pixel",
   subsets: ["latin"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
   title: "PokéDex Manager",
-  description: "Colección personal de Pokémon",
+  description: "Tu colección personal de Pokémon, con IA",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang="es" className={`${rubik.variable} ${pixel.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <Nav />
         {children}

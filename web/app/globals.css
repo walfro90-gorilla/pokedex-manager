@@ -1,26 +1,53 @@
 @import "tailwindcss";
 
+/* Paleta Pokédex — look único y deliberado (no varía con el theme del sistema;
+   un badge invisible en dark mode ya nos costó un bug). */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --poke-red: #dc0a2d;
+  --poke-red-dark: #b00822;
+  --poke-yellow: #ffcb05;
+  --poke-blue: #3466af;
+  --poke-navy: #1f2937;
+  --background: #f6f7fb;
+  --surface: #ffffff;
+  --foreground: #1f2937;
+  --muted: #6b7280;
 }
 
 @theme inline {
+  --color-poke-red: var(--poke-red);
+  --color-poke-red-dark: var(--poke-red-dark);
+  --color-poke-yellow: var(--poke-yellow);
+  --color-poke-blue: var(--poke-blue);
+  --color-poke-navy: var(--poke-navy);
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-muted: var(--muted);
+  --font-sans: var(--font-rubik);
+  --font-pixel: var(--font-pixel);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-rubik), system-ui, sans-serif;
+}
+
+/* Número de Pokédex estilo retro */
+.pixel {
+  font-family: var(--font-pixel), monospace;
+}
+
+/* Tarjeta base */
+.poke-card {
+  background: var(--surface);
+  border: 2px solid #e5e7eb;
+  border-radius: 1rem;
+  transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+}
+.poke-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--poke-red);
+  box-shadow: 0 6px 16px rgb(220 10 45 / 0.12);
 }
