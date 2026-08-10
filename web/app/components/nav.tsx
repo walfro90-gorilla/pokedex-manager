@@ -22,21 +22,23 @@ export default async function Nav() {
           PokéDex Manager
         </Link>
 
+        {/* Sin sesión solo se ofrecen login/registro; las funciones aparecen
+            al autenticarse (las rutas igual están protegidas en proxy.ts) */}
         <div className="hidden items-center gap-x-1 sm:flex">
-          <Link href="/pokedex" className={linkCls}>
-            Pokédex
-          </Link>
-          <Link href="/identify" className={linkCls}>
-            Identificar
-          </Link>
-          <Link href="/trainers" className={linkCls}>
-            Entrenadores
-          </Link>
-          <Link href="/quien-es" className={linkCls}>
-            ¿Quién es?
-          </Link>
           {user ? (
             <>
+              <Link href="/pokedex" className={linkCls}>
+                Pokédex
+              </Link>
+              <Link href="/identify" className={linkCls}>
+                Identificar
+              </Link>
+              <Link href="/trainers" className={linkCls}>
+                Entrenadores
+              </Link>
+              <Link href="/quien-es" className={linkCls}>
+                ¿Quién es?
+              </Link>
               <Link href="/collection" className={linkCls}>
                 Mi colección
               </Link>

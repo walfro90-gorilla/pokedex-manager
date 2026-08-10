@@ -29,7 +29,6 @@ const ICONS = {
   pokedex: "M4 6h16M4 10h16M4 14h10M4 18h7",
   collection: "M12 3a9 9 0 0 1 9 9H3a9 9 0 0 1 9-9zM3 12a9 9 0 0 0 18 0M9.5 12a2.5 2.5 0 0 0 5 0",
   chat: "M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5z",
-  login: "M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3",
   trainers:
     "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
 };
@@ -58,6 +57,10 @@ function Tab({
 export default function BottomNav({ authed }: { authed: boolean }) {
   const pathname = usePathname();
 
+  // Sin sesión no hay navegación: login/register se enlazan entre sí y el
+  // resto de rutas está protegido en proxy.ts.
+  if (!authed) return null;
+
   return (
     <nav
       className="fixed inset-x-0 bottom-0 z-40 border-t-2 border-gray-100 bg-surface pb-[env(safe-area-inset-bottom)] sm:hidden"
@@ -65,16 +68,12 @@ export default function BottomNav({ authed }: { authed: boolean }) {
     >
       <div className="mx-auto flex max-w-md items-end">
         <Tab href="/pokedex" icon="pokedex" label="Pokédex" active={pathname.startsWith("/pokedex")} />
-        {authed ? (
-          <Tab
-            href="/collection"
-            icon="collection"
-            label="Colección"
-            active={pathname.startsWith("/collection")}
-          />
-        ) : (
-          <Tab href="/login" icon="login" label="Entrar" active={pathname.startsWith("/login")} />
-        )}
+        <Tab
+          href="/collection"
+          icon="collection"
+          label="Colección"
+          active={pathname.startsWith("/collection")}
+        />
 
         {/* Botón central: cámara para capturar (Modo Pokédex) */}
         <div className="relative flex-1">
@@ -109,32 +108,13 @@ export default function BottomNav({ authed }: { authed: boolean }) {
           </div>
         </div>
 
-        {authed ? (
-          <>
-            <Tab href="/chat" icon="chat" label="Chat" active={pathname.startsWith("/chat")} />
-            <Tab
-              href="/trainers"
-              icon="trainers"
-              label="Entrenadores"
-              active={pathname.startsWith("/trainers")}
-            />
-          </>
-        ) : (
-          <>
-            <Tab
-              href="/trainers"
-              icon="trainers"
-              label="Entrenadores"
-              active={pathname.startsWith("/trainers")}
-            />
-            <Tab
-              href="/register"
-              icon="collection"
-              label="Registro"
-              active={pathname.startsWith("/register")}
-            />
-          </>
-        )}
+        <Tab href="/chat" icon="chat" label="Chat" active={pathname.startsWith("/chat")} />
+        <Tab
+          href="/trainers"
+          icon="trainers"
+          label="Entrenadores"
+          active={pathname.startsWith("/trainers")}
+        />
       </div>
     </nav>
   );

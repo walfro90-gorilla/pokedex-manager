@@ -1,7 +1,16 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const PROTECTED_PATHS = ["/collection", "/chat"];
+// Toda la app requiere sesión; solo login/register (y el callback de OAuth)
+// son públicos. La protección de DATOS sigue siendo RLS — esto es UX.
+const PROTECTED_PATHS = [
+  "/collection",
+  "/chat",
+  "/pokedex",
+  "/identify",
+  "/trainers",
+  "/quien-es",
+];
 
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
