@@ -3,6 +3,7 @@ import { Rubik, Press_Start_2P } from "next/font/google";
 import Nav from "@/app/components/nav";
 import BottomNav from "@/app/components/bottom-nav";
 import InstallPrompt from "@/app/components/install-prompt";
+import WelcomeTour from "@/app/components/welcome-tour";
 import { createClient } from "@/lib/supabase/server";
 import "./globals.css";
 
@@ -52,6 +53,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         {children}
         <BottomNav authed={Boolean(user)} />
         <InstallPrompt />
+        {user && <WelcomeTour />}
       </body>
     </html>
   );
