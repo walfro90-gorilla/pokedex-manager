@@ -166,9 +166,14 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       sslip.io (docker-compose.prod.yml overlay). URLs nuevas de producción:
       https://209-50-54-47.sslip.io (web) y https://api.209-50-54-47.sslip.io (ai).
       Los puertos HTTP :3000/:8000 siguen abiertos como fallback.
+- [x] Nav mobile con hamburger (details/summary, sin JS de cliente) + banner de
+      instalación PWA (beforeinstallprompt + hint iOS + dismiss en localStorage).
+      Verificado en el deploy https.
 - [ ] PENDIENTE: Site URL de Supabase → https://209-50-54-47.sslip.io (dashboard manual,
       hoy apunta a http://209.50.54.47:3000 — los correos de confirmación siguen
       funcionando pero aterrizan en la versión http)
+- NOTA dev: NO correr `npm run build` con `next dev` activo — comparten .next/ y el
+  build mata al dev server silenciosamente. Bajar dev, build, relanzar.
 - [ ] F4 — falta: video Loom ≤5 min, borrar SIGUIENTE-PASOS.md, clone limpio siguiendo
       README para validar, correo a cfernandez@febara.com.mx antes del miércoles mediodía
 - NOTA sesión: ai-service NO carga .env solo — arrancar con `set -a; source .env; set +a`
