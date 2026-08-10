@@ -95,7 +95,7 @@ Ya escrito y verificado; leerlo antes de tocar el frontend que lo consume. Tres 
 - TypeScript estricto; componentes server por default, client solo donde hay interacción.
 - Sin librerías de estado global (el scope no lo amerita); estado local + server components.
 - Estilo visual: limpio y responsive mobile-first. Usable > espectacular.
-- Español en UI (el evaluador es mexicano); código y nombres en inglés.
+- Español en UI; código y nombres en inglés.
 
 ## Env vars
 
@@ -105,7 +105,7 @@ Ver `web/.env.example` y `ai-service/.env.example`. NUNCA commitear `.env*` real
 ## Prohibido en este repo
 
 - Service keys de Supabase en cualquier parte
-- Datos o referencias de clientes de Gorilla Labs (este repo será revisado por terceros)
+- Datos o referencias de clientes o trabajos previos (este repo es público)
 - Dependencias pesadas no justificadas (LangChain, ORMs — ver docs/DECISIONS.md)
 - Trabajar features nuevas el miércoles (día de entrega: solo docs, video, envío)
 
@@ -142,7 +142,7 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       sprites pixelados de 96px (mewtwo→persian/meowth, jigglypuff→clefairy) —
       documentar como limitación conocida en README.
 - [x] F3 — Deploy en UpCloud: server "pokedex" (209.50.54.47, Ubuntu 26.04, 2vCPU/4GB,
-      root via SSH, key de esta laptop). Código en /opt/pokedex (rsync, sin git en server),
+      deploy por SSH+rsync). Código en /opt/pokedex (rsync, sin git en server),
       docker compose build+up ahí mismo. web:3000 y ai-service:8000 públicos por IP.
       Verificado en browser contra el deploy: login, colección, chat con tools. Los .env
       del server tienen NEXT_PUBLIC_AI_SERVICE_URL y CORS_ORIGINS apuntando a la IP.
@@ -198,7 +198,7 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       juego /quien-es; banner de entrenador con pokébolas en /pokedex. Migraciones
       aplicadas: chat_messages_history, avatars_storage_bucket,
       trainer_profiles_directory, trainer_public_profile. Cuenta demo "Gary"
-      (walfre.am+gary@gmail.com / GaryOak151!) con 3 pokémon.
+      (walfre.am+gary@gmail.com, password rotado fuera del repo) con 3 pokémon.
 - [x] HARD TESTING completo contra producción https: 12 flujos verificados en browser
       real (detalle con sprite animado/grito/movimientos, captura→confetti→redirect,
       colección GB + medallero 6/8 correcto, avatar upload a Storage + write-through,
