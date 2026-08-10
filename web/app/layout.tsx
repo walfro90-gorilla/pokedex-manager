@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Rubik, Press_Start_2P } from "next/font/google";
 import Nav from "@/app/components/nav";
+import InstallPrompt from "@/app/components/install-prompt";
 import "./globals.css";
 
 const rubik = Rubik({
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         <Nav />
         {children}
+        <InstallPrompt />
       </body>
     </html>
   );
