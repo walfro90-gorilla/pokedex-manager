@@ -116,6 +116,23 @@ list_tools, list_resources, call_tool de las tres herramientas y read_resource
 contra el proyecto Supabase vivo. La distinción honesta de D9 se mantiene en el
 README: `/chat` es function calling, esto es MCP — el repo demuestra ambos.
 
+## D14 — Login con Google y la identidad canónica del entrenador (2026-08-10)
+Se agregó OAuth con Google (botón en /login y /register vía Server Action +
+`/auth/callback` con intercambio PKCE — cero JS de cliente). Dos lecciones que
+quedaron en el diseño: (1) detrás del reverse proxy, `request.url` en un route
+handler trae el host interno del contenedor — el origen público para redirects
+se construye con `x-forwarded-host`/`x-forwarded-proto` (Caddy los manda);
+(2) Supabase vincula la identidad de Google a la cuenta existente por email
+verificado y **sobreescribe `user_metadata.avatar_url` con la foto de Google en
+cada login** — por eso `profiles` es la fuente canónica de nombre/foto del
+entrenador en toda la UI (`web/lib/trainer.ts`) y `user_metadata` es solo
+fallback. El callback hace upsert del perfil público con `ignoreDuplicates`:
+un usuario nuevo de Google aparece en /trainers con su nombre y foto de Google,
+pero un perfil ya personalizado jamás se pisa. El template branded del correo
+de confirmación (`supabase/email-confirm-signup.html`) queda en el repo sin
+aplicar: Supabase hosted exige SMTP custom para editar templates y no se
+justifica para la evaluación.
+
 ## Fuera de alcance (por tiempo, documentado a propósito)
 - Tests e2e del frontend; se priorizaron evals de la capa de IA (mayor riesgo).
 - Cache de PokéAPI en DB propia; el cache de fetch de Next.js cubre el caso.
