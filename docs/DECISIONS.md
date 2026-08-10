@@ -87,6 +87,18 @@ queda intacto para la evaluación local. Descartado: service worker con soporte 
 — Chrome ya no lo exige para instalar, y el shell offline de una app cuyo contenido
 vive en APIs externas aporta poco (documentado como mejora futura).
 
+## D12 — Capa social y gamificación sin romper RLS (2026-08-10)
+Se agregó comunidad de entrenadores (directorio + perfiles públicos), medallero,
+juego "¿Quién es ese Pokémon?", modo cámara y chat visual persistente. La decisión
+de seguridad clave: **la tabla `collection` nunca se abrió al público**. Lo público
+sale por dos funciones `security definer` con contrato explícito y mínimo
+(`trainer_directory()`: nombre/foto/conteo; `trainer_pokemons(uuid)`: solo datos de
+exhibición del equipo — las notas personales y todo lo demás siguen tras RLS). El
+perfil (nombre/foto) vive en `profiles` con lectura pública y escritura solo propia;
+el avatar sube a Storage con políticas por carpeta de usuario. El medallero se
+computa de las filas ya cargadas (cero contadores que mantener). Gamificación con
+datos derivados, no con estado nuevo.
+
 ## Fuera de alcance (por tiempo, documentado a propósito)
 - MCP server sobre la colección (bonus #2, protocolo específico — distinto del
   tool-calling que sí está implementado en agent.py, ver D9): diseñado, no
