@@ -181,6 +181,11 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
 - [x] Polish final: skeletons (pokedex+detalle), error.tsx global, not-found.tsx
       branded, favicon pokébola. Desplegado. Nota: 404 en rutas con loading.tsx
       responde HTTP 200 por streaming — usuario ve la página 404 correcta.
+- [x] Modo Pokédex en /identify: cámara del dispositivo (getUserMedia trasera) con
+      visor + obturador → frame a canvas → JPEG → mismo /identify. Requiere HTTPS
+      (ya cubierto). Deliberado: un tap = un escaneo, NO detección continua (cada
+      frame = llamada al LLM de visión). Desplegado; falta prueba real en teléfono
+      del usuario (el permiso de cámara es diálogo nativo, no automatizable).
 - [ ] F4 — falta: video Loom ≤5 min, borrar SIGUIENTE-PASOS.md, clone limpio siguiendo
       README para validar, correo a cfernandez@febara.com.mx antes del miércoles mediodía
 - NOTA sesión: ai-service NO carga .env solo — arrancar con `set -a; source .env; set +a`
