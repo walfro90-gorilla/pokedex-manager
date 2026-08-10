@@ -245,9 +245,17 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       muestra una vez (localStorage welcome-tour-done), sin librerías. Montado
       en layout junto a InstallPrompt. Verificado en prod: aparece con flag
       limpio, 9 títulos correctos, cierra al final y no reaparece tras reload.
-- [ ] F4 — falta: video Loom ≤5 min, borrar SIGUIENTE-PASOS.md, correo a
-      cfernandez@febara.com.mx antes del miércoles mediodía, repo público o
-      invitar al evaluador (hoy es PRIVADO)
+- [x] Entrega: repo PÚBLICO (saneado: password Gary rotado, referencias fuera),
+      descripción+homepage+topics+LICENSE MIT en GitHub, guía de uso en README,
+      borrador del correo en Gmail del usuario, MCP registrado en Claude Code
+      local (cuenta QA), cuenta demo limpiada a 0 para el video.
+- [x] Gating de navegación (2026-08-10): sin sesión solo login/registro visibles
+      (desktop) y sin tab bar (mobile); TODAS las rutas de la app en
+      PROTECTED_PATHS de proxy.ts (antes solo /collection y /chat). Verificado
+      en prod: 6 rutas anónimas redirigen 307 a /login?redirectTo=..., navbar
+      anónimo solo muestra Iniciar sesión/Registrarme, logueado ve todo.
+- [ ] F4 — falta: video (guion listo en la conversación), enviar el borrador de
+      Gmail a cfernandez@febara.com.mx antes del miércoles mediodía
 - NOTA sesión: ai-service NO carga .env solo — arrancar con `set -a; source .env; set +a`
   antes de uvicorn (o usar docker compose que sí usa env_file). GROQ_API_KEY real ya
   está en ai-service/.env (gitignored).
