@@ -156,6 +156,11 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
 - [x] F4 (parcial) — README.md final escrito (arquitectura, setup, env vars, evals 8/10,
       D1-D10 condensadas, bonus con distinción honesta MCP vs tool-calling, screenshot
       del deploy en docs/screenshot.jpg)
+- [x] Rediseño UI con branding Pokémon: paleta Pokédex + Rubik + Press Start 2P +
+      colores de los 18 tipos (lib/pokemon-theme.ts) + pokébola SVG. Chat visual con
+      cards de pokémon (datos de tools del agente) y memoria persistente en DB
+      (tabla chat_messages + RLS, migración chat_messages_history aplicada).
+      Verificado local y redeploy a UpCloud con el rediseño vivo.
 - [ ] F4 — falta: video Loom ≤5 min, borrar SIGUIENTE-PASOS.md, clone limpio siguiendo
       README para validar, correo a cfernandez@febara.com.mx antes del miércoles mediodía
 - NOTA sesión: ai-service NO carga .env solo — arrancar con `set -a; source .env; set +a`
