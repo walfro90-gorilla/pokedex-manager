@@ -178,6 +178,9 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       README (cp .env.example + llenar) → docker compose up --build en el server con
       puertos alternos → web 200, /health OK, /identify identifica correcto. El flujo
       del evaluador funciona tal como está documentado.
+- [x] Polish final: skeletons (pokedex+detalle), error.tsx global, not-found.tsx
+      branded, favicon pokébola. Desplegado. Nota: 404 en rutas con loading.tsx
+      responde HTTP 200 por streaming — usuario ve la página 404 correcta.
 - [ ] F4 — falta: video Loom ≤5 min, borrar SIGUIENTE-PASOS.md, clone limpio siguiendo
       README para validar, correo a cfernandez@febara.com.mx antes del miércoles mediodía
 - NOTA sesión: ai-service NO carga .env solo — arrancar con `set -a; source .env; set +a`
