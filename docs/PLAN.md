@@ -6,15 +6,17 @@
 > bloqueante de ninguna fase. Se mantiene en el plan si el tiempo alcanza porque
 > reduce fricción de evaluación, pero nunca a costa de core/bonus documentados.
 
-## F1 — Core web (lunes) — EN PROGRESO
+## F1 — Core web (lunes) — CASI LISTO
 **AC:** un usuario nuevo puede registrarse, loguearse, navegar la pokédex paginada
 con búsqueda, ver detalle con stats/tipos, capturar/soltar pokémon con nota, y su
 colección persiste y es SOLO suya (verificar con 2 cuentas). Responsive en 375px.
 Deploy en Vercel es stretch, no bloqueante.
 
 Tareas: setup Supabase clients (browser/server) ✅ → páginas auth + middleware ✅ →
-/pokedex lista+búsqueda → /pokedex/[name] detalle → /collection CRUD → responsive
-pass → (stretch) deploy.
+/pokedex lista+búsqueda ✅ → /pokedex/[name] detalle ✅ → /collection CRUD ✅ →
+responsive pass (⚠️ pendiente confirmar visualmente a 375px — implementado
+mobile-first pero sin verificación real en browser, ver Estado actual en CLAUDE.md)
+→ (stretch) deploy.
 
 ## F2 — IA en frontend (martes) — TODO
 **AC:** subir una foto de un Pokémon lo identifica y permite agregarlo en 2 clics;

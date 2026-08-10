@@ -122,8 +122,17 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
 - [x] F1 — auth: /login, /register, /logout (Server Actions) + proxy.ts protege /collection.
       Probado en browser end-to-end. Confirmación de email queda ACTIVA (ver D8 en
       docs/DECISIONS.md) — cuentas nuevas no loguean hasta confirmar correo.
-- [ ] F1 — falta: /pokedex lista+búsqueda, /pokedex/[name] detalle, /collection CRUD,
-      responsive pass, deploy a Vercel — ver docs/PLAN.md
+- [x] F1 — /pokedex (lista+búsqueda+paginación sobre PokéAPI, cache 24h), /pokedex/[name]
+      (detalle+captura), /collection (listar/soltar/editar nota vía RLS), nav global.
+      Probado en browser end-to-end incl. RLS (sin filtro user_id manual — la política lo
+      hace). Fix aplicado: badges de tipo eran invisibles en dark mode (texto heredado
+      blanco sobre bg-gray-100), ya corregido con text-gray-800 explícito.
+- [ ] F1 — falta: responsive pass verificado a 375px (el tool de resize de browser no
+      funcionó en este entorno — WM ignora el resize; el grid/nav ya usan clases
+      mobile-first pero falta confirmación visual real), deploy a Vercel (stretch, ver D9)
+- [x] Revisión de alineación contra el brief oficial del cliente (D9 en DECISIONS.md):
+      deploy bajado de AC bloqueante a stretch goal; bonus MCP (#2) reafirmado como
+      protocolo específico, distinto del tool-calling ya implementado en agent.py
 - [ ] F2 — Integración IA en frontend (upload + chat) + evals con imágenes reales
-- [ ] F3 — Deploy (Vercel + Cloud Run/Railway) 
+- [ ] F3 — Deploy (stretch, no bloqueante — ver D9)
 - [ ] F4 — README final + video + entrega a cfernandez@febara.com.mx
