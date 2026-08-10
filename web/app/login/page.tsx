@@ -1,4 +1,5 @@
 import Link from "next/link";
+import GoogleButton from "@/app/components/google-button";
 import Pokeball from "@/app/components/pokeball";
 import { login } from "./actions";
 
@@ -58,6 +59,8 @@ export default async function LoginPage({
             Entrar
           </button>
         </form>
+
+        <GoogleButton redirectTo={redirectTo ?? "/pokedex"} />
 
         <p className="mt-6 text-center text-sm text-muted">
           ¿No tienes cuenta?{" "}

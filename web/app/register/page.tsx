@@ -1,4 +1,5 @@
 import Link from "next/link";
+import GoogleButton from "@/app/components/google-button";
 import Pokeball from "@/app/components/pokeball";
 import { signup } from "./actions";
 
@@ -52,6 +53,8 @@ export default async function RegisterPage({
             Registrarme
           </button>
         </form>
+
+        <GoogleButton />
 
         <p className="mt-6 text-center text-sm text-muted">
           ¿Ya tienes cuenta?{" "}
