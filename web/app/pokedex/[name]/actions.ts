@@ -36,4 +36,6 @@ export async function captureAction(formData: FormData) {
 
   revalidatePath(`/pokedex/${name}`);
   revalidatePath("/collection");
+  // captured=1 solo si fue captura NUEVA (dispara el confetti en el detalle)
+  redirect(error?.code === "23505" ? `/pokedex/${name}` : `/pokedex/${name}?captured=1`);
 }
