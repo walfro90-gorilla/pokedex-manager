@@ -1,0 +1,50 @@
+<!-- Template de "Confirm signup" para Supabase Auth.
+     Pegar en: Dashboard → Authentication → Emails → Confirm signup (Body).
+     Sugerencia de Subject: Confirma tu correo — PokéDex Manager
+     Variables disponibles: {{ .ConfirmationURL }}, {{ .SiteURL }}, {{ .Email }} -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:32px 16px;font-family:Arial,Helvetica,sans-serif;">
+  <tr>
+    <td align="center">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:440px;background:#ffffff;border-radius:16px;overflow:hidden;border:1px solid #e5e7eb;">
+        <!-- Franja superior estilo Pokédex -->
+        <tr>
+          <td style="background:#dc0a2d;padding:20px 24px;" align="center">
+            <!-- Pokébola simple -->
+            <div style="width:48px;height:48px;background:#ffffff;border-radius:50%;border:4px solid #1f2937;position:relative;margin:0 auto;">
+              <div style="width:48px;height:22px;background:#dc0a2d;border-radius:24px 24px 0 0;border-bottom:4px solid #1f2937;"></div>
+              <div style="width:14px;height:14px;background:#ffffff;border:4px solid #1f2937;border-radius:50%;margin:-13px auto 0;"></div>
+            </div>
+            <p style="margin:12px 0 0;color:#ffffff;font-size:18px;font-weight:bold;letter-spacing:.5px;">PokéDex Manager</p>
+          </td>
+        </tr>
+        <!-- Cuerpo -->
+        <tr>
+          <td style="padding:28px 24px;" align="center">
+            <h1 style="margin:0 0 8px;font-size:20px;color:#1f2937;">¡Un nuevo entrenador apareció!</h1>
+            <p style="margin:0 0 24px;font-size:14px;color:#4b5563;line-height:1.5;">
+              Confirma tu correo para activar tu cuenta y empezar a capturar Pokémon.
+            </p>
+            <a href="{{ .ConfirmationURL }}"
+               style="display:inline-block;background:#dc0a2d;color:#ffffff;text-decoration:none;font-size:15px;font-weight:bold;padding:12px 32px;border-radius:999px;">
+              Confirmar mi correo
+            </a>
+            <p style="margin:24px 0 0;font-size:12px;color:#9ca3af;line-height:1.5;">
+              Si el botón no funciona, copia y pega este enlace:<br>
+              <a href="{{ .ConfirmationURL }}" style="color:#3466af;word-break:break-all;">{{ .ConfirmationURL }}</a>
+            </p>
+          </td>
+        </tr>
+        <!-- Pie -->
+        <tr>
+          <td style="background:#1f2937;padding:14px 24px;" align="center">
+            <p style="margin:0;font-size:11px;color:#9ca3af;">
+              Recibes este correo porque te registraste en
+              <a href="{{ .SiteURL }}" style="color:#ffcb05;text-decoration:none;">PokéDex Manager</a>.
+              Si no fuiste tú, ignóralo.
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
