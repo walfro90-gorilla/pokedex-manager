@@ -47,3 +47,33 @@ create policy "update_own_collection"
 create policy "delete_own_collection"
   on public.collection for delete
   using (auth.uid() = user_id);
+
+-- =============================================
+-- Tabla: chat_messages (historial persistente del asistente)
+-- Mismo patrón RLS que collection; cards guarda los pokémon que el
+-- frontend renderizó en ese mensaje (presentación, no fuente de verdad).
+-- =============================================
+create table if not exists public.chat_messages (
+  id          uuid primary key default gen_random_uuid(),
+  user_id     uuid not null default auth.uid() references auth.users (id) on delete cascade,
+  role        text not null check (role in ('user','assistant')),
+  content     text not null,
+  cards       jsonb not null default '[]',
+  created_at  timestamptz not null default now()
+);
+
+create index if not exists chat_messages_user_idx on public.chat_messages (user_id, created_at);
+
+alter table public.chat_messages enable row level security;
+
+create policy "select_own_chat"
+  on public.chat_messages for select
+  using (auth.uid() = user_id);
+
+create policy "insert_own_chat"
+  on public.chat_messages for insert
+  with check (auth.uid() = user_id);
+
+create policy "delete_own_chat"
+  on public.chat_messages for delete
+  using (auth.uid() = user_id);

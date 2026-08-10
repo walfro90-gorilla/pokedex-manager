@@ -93,7 +93,7 @@ async def _tool_query_collection(user_jwt: str, args: dict) -> Any:
     async with httpx.AsyncClient(timeout=TIMEOUT) as client:
         r = await client.get(
             f"{url}/rest/v1/collection",
-            params={"select": "pokemon_id,name,types,stats,notes,captured_at",
+            params={"select": "pokemon_id,name,sprite_url,types,stats,notes,captured_at",
                     "order": "captured_at.desc"},
             headers={"apikey": anon, "Authorization": f"Bearer {user_jwt}"},
         )
@@ -198,7 +198,10 @@ async def run_agent(user_jwt: str, history: list[dict], user_message: str) -> di
             except Exception as e:  # el error VUELVE al modelo, no se oculta
                 log.warning("tool %s falló: %s", name, e)
                 result = {"error": f"La herramienta {name} falló: {e}"}
-            tool_trace.append({"tool": name, "result_preview": str(result)[:120]})
+            # result completo para que el frontend pueda renderizar cards
+            # (sprites/tipos/stats); preview corto para logs y traza compacta.
+            tool_trace.append({"tool": name, "result_preview": str(result)[:120],
+                               "result": result})
             messages.append({"role": "tool", "tool_call_id": call["id"],
                              "content": json.dumps(result, ensure_ascii=False)})
 
