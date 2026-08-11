@@ -138,10 +138,68 @@ async def _tool_add_pokemon(user_jwt: str, args: dict) -> Any:
     return {"ok": True, "added": poke["name"]}
 
 
+async def _tool_remove_pokemon(user_jwt: str, args: dict) -> Any:
+    """Suelta un Pokémon de la colección. RLS garantiza que solo del propio."""
+    url = os.environ["SUPABASE_URL"]
+    anon = os.environ["SUPABASE_ANON_KEY"]
+    pid = int(args["pokemon_id"])
+    async with httpx.AsyncClient(timeout=TIMEOUT) as client:
+        r = await client.delete(
+            f"{url}/rest/v1/collection",
+            params={"pokemon_id": f"eq.{pid}"},
+            headers={"apikey": anon, "Authorization": f"Bearer {user_jwt}",
+                     "Prefer": "return=representation"},
+        )
+    r.raise_for_status()
+    if not r.json():
+        return {"error": "Ese Pokémon no está en tu colección"}
+    return {"ok": True, "removed": r.json()[0]["name"]}
+
+
+async def _tool_update_note(user_jwt: str, args: dict) -> Any:
+    """Edita la nota personal de un Pokémon capturado (RLS: solo propio)."""
+    url = os.environ["SUPABASE_URL"]
+    anon = os.environ["SUPABASE_ANON_KEY"]
+    pid = int(args["pokemon_id"])
+    async with httpx.AsyncClient(timeout=TIMEOUT) as client:
+        r = await client.patch(
+            f"{url}/rest/v1/collection",
+            params={"pokemon_id": f"eq.{pid}"},
+            headers={"apikey": anon, "Authorization": f"Bearer {user_jwt}",
+                     "Prefer": "return=representation"},
+            json={"notes": args.get("notes")},
+        )
+    r.raise_for_status()
+    if not r.json():
+        return {"error": "Ese Pokémon no está en tu colección"}
+    return {"ok": True, "pokemon": r.json()[0]["name"], "notes": r.json()[0]["notes"]}
+
+
+async def _tool_trainer_directory(user_jwt: str, args: dict) -> Any:
+    """Directorio público de entrenadores (misma función security definer
+    que usa la web — solo datos de exhibición, ver D12)."""
+    url = os.environ["SUPABASE_URL"]
+    anon = os.environ["SUPABASE_ANON_KEY"]
+    async with httpx.AsyncClient(timeout=TIMEOUT) as client:
+        r = await client.post(
+            f"{url}/rest/v1/rpc/trainer_directory",
+            headers={"apikey": anon, "Authorization": f"Bearer {user_jwt}"},
+            json={},
+        )
+    r.raise_for_status()
+    return r.json()
+
+
+# Registro compartido de implementaciones deterministas. El agente del chat
+# solo puede llamar las declaradas en TOOLS; el servidor MCP (mcp_server.py)
+# expone además las de gestión completa — misma implementación, un solo lugar.
 TOOL_IMPL = {
     "query_collection": _tool_query_collection,
     "search_pokeapi": _tool_search_pokeapi,
     "add_pokemon": _tool_add_pokemon,
+    "remove_pokemon": _tool_remove_pokemon,
+    "update_note": _tool_update_note,
+    "trainer_directory": _tool_trainer_directory,
 }
 
 

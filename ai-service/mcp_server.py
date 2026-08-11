@@ -32,6 +32,23 @@ import httpx
 # Importable sin importar desde qué cwd lance el cliente MCP este script
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+
+def _load_env_fallback() -> None:
+    """Setup en una línea para el evaluador: si el cliente MCP no pasa
+    SUPABASE_URL/ANON_KEY, se toman de ai-service/.env (ya llenado para el
+    servicio). Las env del cliente MCP tienen prioridad (setdefault)."""
+    env_file = Path(__file__).resolve().parent / ".env"
+    if not env_file.exists():
+        return
+    for line in env_file.read_text().splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            k, v = line.split("=", 1)
+            os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+
+
+_load_env_fallback()
+
 from app.agent import TOOL_IMPL  # noqa: E402
 from mcp.server.fastmcp import FastMCP  # noqa: E402
 
@@ -102,11 +119,52 @@ async def add_pokemon(pokemon_id: int, notes: str | None = None) -> dict:
     return await _call_tool("add_pokemon", {"pokemon_id": pokemon_id, "notes": notes})
 
 
+@mcp.tool()
+async def remove_pokemon(pokemon_id: int) -> dict:
+    """Suelta (elimina) un Pokémon de la colección por su id numérico."""
+    return await _call_tool("remove_pokemon", {"pokemon_id": pokemon_id})
+
+
+@mcp.tool()
+async def update_note(pokemon_id: int, notes: str | None = None) -> dict:
+    """Edita la nota personal de un Pokémon capturado (None la borra)."""
+    return await _call_tool("update_note", {"pokemon_id": pokemon_id, "notes": notes})
+
+
+@mcp.tool()
+async def trainer_directory() -> list:
+    """Directorio público de entrenadores: nombre, foto y conteo de Pokémon."""
+    return await _call_tool("trainer_directory", {})
+
+
 @mcp.resource("collection://mine")
 async def collection_resource() -> str:
     """La colección completa del usuario como recurso JSON de solo lectura."""
     rows = await _call_tool("query_collection", {})
     return json.dumps(rows, ensure_ascii=False, indent=2)
+
+
+# Prompts MCP: en Claude Code aparecen como slash commands
+# (/mcp__pokedex__analizar_coleccion, /mcp__pokedex__capturar).
+@mcp.prompt()
+def analizar_coleccion() -> str:
+    """Análisis completo del equipo: resumen, tipos, fortalezas y huecos."""
+    return (
+        "Analiza mi colección Pokémon con query_collection: dame un resumen del "
+        "equipo, los tipos cubiertos y los que faltan, el más fuerte por stats, "
+        "y recomienda 2 capturas concretas (verifícalas con search_pokeapi). "
+        "No agregues nada sin que yo lo confirme."
+    )
+
+
+@mcp.prompt()
+def capturar(nombre: str) -> str:
+    """Busca un Pokémon por nombre y agrégalo a la colección."""
+    return (
+        f"Busca '{nombre}' con search_pokeapi. Si existe, muéstrame sus stats y "
+        f"tipos y agrégalo a mi colección con add_pokemon usando su pokemon_id. "
+        f"Si no existe, dime qué nombres se le parecen."
+    )
 
 
 if __name__ == "__main__":

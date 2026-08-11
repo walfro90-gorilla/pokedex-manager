@@ -166,23 +166,27 @@ LLM) · el botón de Google en una instancia propia requiere configurar el provi
 
 **Bonus 2 — Servidor MCP (Model Context Protocol)**
 - `ai-service/mcp_server.py` — servidor MCP sobre **stdio** (SDK oficial de Python)
-  que conecta la colección a cualquier cliente MCP (Claude Desktop, Claude Code):
-  las 3 herramientas del agente (`query_collection`, `search_pokeapi`, `add_pokemon`)
-  más la colección completa como **resource** de solo lectura (`collection://mine`)
-- Cero lógica duplicada: importa las mismas implementaciones deterministas del
-  agente (`app/agent.py`) — la fuente de verdad de cada herramienta es una sola
+  que conecta la colección a cualquier cliente MCP (Claude Desktop, Claude Code)
+  usando los **tres primitivos** del protocolo:
+  - **6 tools** — gestión completa: `query_collection`, `search_pokeapi`,
+    `add_pokemon`, `remove_pokemon`, `update_note`, `trainer_directory`
+  - **1 resource** — la colección como JSON de solo lectura (`collection://mine`)
+  - **2 prompts** — en Claude Code aparecen como slash commands:
+    `/mcp__pokedex__analizar_coleccion` y `/mcp__pokedex__capturar`
+- Cero lógica duplicada: las implementaciones deterministas viven una sola vez en
+  `app/agent.py` (registry compartido); el agente de `/chat` expone un subconjunto
+  y el MCP la gestión completa
 - Misma postura de seguridad que todo el sistema: el servidor se autentica como un
-  **usuario real** (login contra Supabase Auth, JWT cacheado con renovación) — RLS
-  decide qué ve, sin service key
-- Registro (ejemplo con Claude Code; Claude Desktop usa el mismo comando en su
-  `claude_desktop_config.json`):
+  **usuario real** (login contra Supabase Auth, JWT cacheado con renovación y retry
+  en 401) — RLS decide qué ve, sin service key
+- Registro en **una línea** (las credenciales de Supabase se leen solas de
+  `ai-service/.env`, que ya llenaste para el servicio):
   ```bash
   claude mcp add pokedex \
-    -e SUPABASE_URL=https://<proyecto>.supabase.co \
-    -e SUPABASE_ANON_KEY=<anon-key> \
-    -e POKEDEX_EMAIL=<email-de-tu-cuenta> -e POKEDEX_PASSWORD=<password> \
+    -e POKEDEX_EMAIL=pokedex-qa-01@e2etest.dev -e POKEDEX_PASSWORD='TestPass123!' \
     -- <repo>/ai-service/.venv/bin/python <repo>/ai-service/mcp_server.py
   ```
+  (Claude Desktop: mismo comando y env en `claude_desktop_config.json`.)
 - Distinción honesta: el agente de `/chat` usa function calling estilo OpenAI
   (loop a mano, ver D3); este servidor habla el **protocolo MCP** real. Son dos
   mecanismos distintos y el repo demuestra ambos (ver D13)

@@ -267,6 +267,15 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       a 0 (collection + chat_messages, vía REST con JWT propio — PostgREST
       exige filtro real en DELETE, `?id=not.is.null`). Pre-flight verificado:
       prod https vivo (web 200, /health ok), MCP local responde.
+- [x] MCP ampliado (2026-08-11): 6 tools (+ remove_pokemon, update_note,
+      trainer_directory — implementaciones en el registry compartido de agent.py,
+      TOOLS del chat intacto = cero riesgo al agente), 2 prompts MCP (= slash
+      commands en Claude Code: /mcp__pokedex__analizar_coleccion y
+      /mcp__pokedex__capturar), y fallback a ai-service/.env para que el registro
+      del evaluador sea 1 línea (solo email/password). Smoke test con cliente
+      real: ciclo de vida completo verde (add→note→directory→remove→resource).
+      README bonus 2 actualizado. Dato: el directorio ya muestra 4 entrenadores —
+      el perfil de r.torres se auto-creó con su login de Google (callback upsert).
 - [ ] F4 — falta: grabar el video (guion en docs/VIDEO-SCRIPT.md), pegar el
       link de Loom en el borrador de Gmail y enviarlo a
       cfernandez@febara.com.mx antes del miércoles mediodía. Tras grabar:
