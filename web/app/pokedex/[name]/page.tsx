@@ -7,6 +7,7 @@ import { STAT_LABELS, STAT_MAX, typeColor } from "@/lib/pokemon-theme";
 import TypeBadge from "@/app/components/type-badge";
 import PokemonCry from "@/app/components/pokemon-cry";
 import CaptureCelebration from "@/app/components/capture-celebration";
+import CaptureButton from "./capture-button";
 import MoveButton from "./move-button";
 import { captureAction } from "./actions";
 
@@ -183,12 +184,7 @@ export default async function PokemonDetailPage({
               <input type="hidden" name="sprite_url" value={pokemon.spriteUrl} />
               <input type="hidden" name="types" value={JSON.stringify(pokemon.types)} />
               <input type="hidden" name="stats" value={JSON.stringify(pokemon.stats)} />
-              <button
-                type="submit"
-                className="rounded-full bg-poke-red px-8 py-2.5 text-sm font-bold text-white transition-colors hover:bg-poke-red-dark"
-              >
-                ¡Capturar!
-              </button>
+              <CaptureButton cryUrl={pokemon.cryUrl} />
             </form>
           )}
         </div>
