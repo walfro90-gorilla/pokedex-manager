@@ -267,6 +267,9 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       a 0 (collection + chat_messages, vía REST con JWT propio — PostgREST
       exige filtro real en DELETE, `?id=not.is.null`). Pre-flight verificado:
       prod https vivo (web 200, /health ok), MCP local responde.
+- [x] Chips contextuales en /chat (sugerencias generadas del equipo real vía
+      RLS, visibles con historial) + logout discreto en header mobile — ambos
+      verificados en prod (chips personalizados con el equipo de Gary).
 - [x] MCP ampliado (2026-08-11): 6 tools (+ remove_pokemon, update_note,
       trainer_directory — implementaciones en el registry compartido de agent.py,
       TOOLS del chat intacto = cero riesgo al agente), 2 prompts MCP (= slash

@@ -115,6 +115,12 @@ red nueva. Verificado con un cliente MCP real (SDK oficial): initialize,
 list_tools, list_resources, call_tool de las tres herramientas y read_resource
 contra el proyecto Supabase vivo. La distinción honesta de D9 se mantiene en el
 README: `/chat` es function calling, esto es MCP — el repo demuestra ambos.
+**Ampliación (2026-08-11):** el servidor creció a los tres primitivos del
+protocolo — 6 tools (gestión completa: + `remove_pokemon`, `update_note`,
+`trainer_directory`, implementadas en el registry compartido de `agent.py` sin
+tocar el schema del agente del chat), 2 prompts que Claude Code expone como
+slash commands, y fallback a `ai-service/.env` para que el registro del
+evaluador sea una sola línea (solo email/password de la cuenta demo).
 
 ## D14 — Login con Google y la identidad canónica del entrenador (2026-08-10)
 Se agregó OAuth con Google (botón en /login y /register vía Server Action +
@@ -132,6 +138,21 @@ pero un perfil ya personalizado jamás se pisa. El template branded del correo
 de confirmación (`supabase/email-confirm-signup.html`) queda en el repo sin
 aplicar: Supabase hosted exige SMTP custom para editar templates y no se
 justifica para la evaluación.
+
+## D15 — Resiliencia ante `tool_use_failed` de Groq + observabilidad (2026-08-10)
+Bug real de producción: el chat fallaba ("Error consultando servicios externos")
+solo en cuentas con historial largo. No era el historial — el replay exacto del
+payload devolvía 200. Causa (capturada tras agregar el body del error del
+provider al log de main.py; antes solo había un status 400 mudo): el modelo
+llama de Groq a veces emite la llamada de herramienta con sintaxis cruda
+malformada (`<function=...>`) y Groq rechaza la generación completa con
+`tool_use_failed` — estocástico, y el historial largo sesga al modelo hacia ese
+modo de fallo. Fix en `_chat_completion`: reintentar (suele bastar) y, si
+persiste, repetir con `tool_choice: "none"` — ese turno degrada a texto en vez
+de tirar 502 al usuario (el schema de tools se conserva porque el loop puede
+traer ya mensajes `role: tool`). Stress test contra producción: 5/5 preguntas
+gatillo respondidas, con 12 fallos internos absorbidos por el retry. Lección
+registrada: nunca "resetear el historial" como remedio — el bug es del provider.
 
 ## Fuera de alcance (por tiempo, documentado a propósito)
 - Tests e2e del frontend; se priorizaron evals de la capa de IA (mayor riesgo).
