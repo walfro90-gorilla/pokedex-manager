@@ -272,7 +272,10 @@ futura: upscaling previo o few-shot con ejemplos pixelados.
 
 ## Decisiones y trade-offs
 
-Versión corta (completa en `docs/DECISIONS.md`, D1–D15):
+Versión corta (completa en `docs/DECISIONS.md`, D1–D16 — la D16 es el diseño de
+la siguiente iteración: guardería, crianza e **híbridos únicos generados por IA**
+con prompt maestro redactado por LLM e imagen de Gemini, documentado a propósito
+en vez de implementado a medias la víspera de la entrega):
 
 - **Monorepo TS + Python** — cada lenguaje donde es más fuerte (D1)
 - **Supabase con RLS** en vez de auth artesanal — la seguridad no depende de no

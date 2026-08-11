@@ -154,6 +154,70 @@ traer ya mensajes `role: tool`). Stress test contra producción: 5/5 preguntas
 gatillo respondidas, con 12 fallos internos absorbidos por el retry. Lección
 registrada: nunca "resetear el historial" como remedio — el bug es del provider.
 
+## D16 — Diseño futuro: guardería, crianza e híbridos generados por IA (no implementado)
+
+Diseñado el 2026-08-11, deliberadamente NO implementado antes de la entrega: toca
+el flujo de captura (el más demostrado del sistema) y su valor no mapea a ningún
+criterio del brief — ver la sección "Fuera de alcance". Queda como siguiente
+iteración, en tres fases incrementales que no rompen nada de lo existente.
+
+**F5.1 — Sexo del Pokémon (cimiento).** Columna `gender text check (gender in
+('male','female','genderless'))` **nullable** en `collection`: las filas
+históricas quedan null ("desconocido"), RLS no cambia, rollback = drop column.
+El sexo se sortea EN la captura (server-side, nunca en el cliente) usando
+`gender_rate` de `/pokemon-species/` (-1 = sin sexo; 0-8 = octavos de
+probabilidad hembra). Detalle traicionero resuelto en diseño: las formas
+alternas (id > 10000) no tienen species propio — se sigue `species.url` del
+pokémon. Si el fetch de species falla, `gender = null` y la captura continúa
+(degradación, no bloqueo). Las capturas vía agente/MCP quedan null a propósito:
+cero cambios en `agent.py`.
+
+**F5.2 — Guardería (daycare) de misma especie/línea.** Tabla nueva
+`daycare_pairs (id, user_id default auth.uid(), parent_a, parent_b, started_at,
+egg_ready_at)` con el MISMO patrón RLS de `collection` (aislamiento por usuario,
+cero policies nuevas que abran datos). Compatibilidad determinista con datos de
+PokéAPI: sexos opuestos (o Ditto como comodín, fiel al juego) y al menos un
+`egg_group` compartido (`/pokemon-species/`). El huevo es puro tiempo:
+`egg_ready_at = started_at + interval` — sin cron, sin workers; la UI compara
+contra `now()` al renderizar (countdown client-side solo visual). Eclosión de
+misma línea: la cría es la primera etapa evolutiva de la madre
+(`evolution_chain` de PokéAPI). UI: sección `/daycare` con las parejas, huevo
+con cuenta regresiva y animación de eclosión (reutiliza la celebración de
+captura).
+
+**F5.3 — Híbridos generados por IA (Nano Banana).** Al cruzar especies
+DISTINTAS compatibles, nace un híbrido único generado por IA en dos pasos que
+respetan las reglas de arquitectura del repo:
+
+1. **El LLM de texto redacta, no decide** (regla #2): la cadena existente
+   (Groq → Gemini) recibe los datos REALES de ambos padres (tipos, colores,
+   rasgos físicos del artwork descrito, tamaño, familia) y produce un **prompt
+   maestro** estructurado y validado con Pydantic (campos: especie base del
+   cuerpo, rasgos heredados de cada padre, paleta, estilo "official Pokémon
+   artwork, white background"). Nada de texto suelto (regla #4).
+2. **Nano Banana (Gemini image) genera la imagen** con ese prompt maestro y
+   safety settings activos. No es un provider nuevo en `VISION_CHAIN` (regla
+   #3 intacta): es una capacidad nueva (`image_generation`) que reutiliza la
+   `GEMINI_API_KEY` ya presente en la cadena.
+
+Lo determinista sigue siendo del código: **stats de la cría = promedio de los
+padres ± roll acotado (5%)**, tipos = uno de cada padre, nombre = validado
+contra PokéAPI para NO colisionar con especies reales (anti-alucinación
+invertida: aquí el nombre debe NO existir). Los híbridos viven en una tabla
+propia `hybrid_pokemon` + imagen en un bucket `hybrids` de Storage (políticas
+por carpeta de usuario, como `avatars`) — **nunca en `collection`**: PokéAPI
+sigue siendo la única fuente de verdad de especies reales (regla #5), y los
+híbridos quedan claramente separados como contenido generado. Costo controlado:
+la generación de imagen es cara → límite de 1 eclosión híbrida por usuario/día
+y el prompt maestro se persiste (regenerar imagen no re-consulta al LLM).
+Vitrina social: los híbridos aparecen en el perfil público vía una función
+`security definer` con contrato mínimo, igual que el equipo (patrón D12).
+
+Por qué este diseño vale más documentado que medio-implementado la víspera de
+la entrega: cada fase es independiente, aditiva y testeable; y la parte de IA
+demuestra el mismo principio que gobierna todo el repo — el LLM propone
+(describe, redacta), el código dispone (stats, validación, persistencia).
+
 ## Fuera de alcance (por tiempo, documentado a propósito)
 - Tests e2e del frontend; se priorizaron evals de la capa de IA (mayor riesgo).
 - Cache de PokéAPI en DB propia; el cache de fetch de Next.js cubre el caso.
