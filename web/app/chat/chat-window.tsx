@@ -204,8 +204,8 @@ export default function ChatWindow({
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-4">
-      <div className="poke-card flex min-h-[360px] flex-1 flex-col gap-4 overflow-y-auto p-4">
+    <div className="flex min-h-0 flex-1 flex-col gap-3">
+      <div className="poke-card flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4">
         {messages.length === 0 && !loading && (
           <div className="flex flex-1 flex-col items-center justify-center gap-4">
             <p className="text-sm text-muted">Prueba con:</p>
@@ -236,7 +236,7 @@ export default function ChatWindow({
               {m.content}
             </div>
             {m.cards.length > 0 && (
-              <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+              <div className="no-scrollbar mt-2 flex gap-2 overflow-x-auto pb-1">
                 {m.cards.map((c) => (
                   <CardChip key={c.pokemon_id} card={c} />
                 ))}
@@ -257,15 +257,16 @@ export default function ChatWindow({
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
-      {/* Sugerencias según el equipo — siempre a la mano, aun con historial */}
+      {/* Sugerencias según el equipo — siempre a la mano, aun con historial.
+          Wrap en vez de scroll horizontal: sin scrollbar inferior. */}
       {messages.length > 0 && !loading && (
-        <div className="flex gap-2 overflow-x-auto pb-1">
+        <div className="flex flex-wrap gap-1.5">
           {teamSuggestions(team).map((s) => (
             <button
               key={s}
               type="button"
               onClick={() => sendMessage(s)}
-              className="shrink-0 rounded-full border-2 border-gray-200 bg-surface px-3 py-1.5 text-xs font-medium text-muted transition-colors hover:border-poke-red hover:text-poke-red"
+              className="max-w-full truncate rounded-full border-2 border-gray-200 bg-surface px-3 py-1.5 text-xs font-medium text-muted transition-colors hover:border-poke-red hover:text-poke-red"
             >
               {s}
             </button>

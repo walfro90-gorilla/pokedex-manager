@@ -35,6 +35,14 @@ body {
 }
 
 /* Número de Pokédex estilo retro */
+/* Scroll por swipe sin scrollbar visible (filas de cards del chat) */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Brinco de felicidad del sprite recién capturado (?captured=1) */
 @keyframes poke-happy {
   0%, 100% { transform: translateY(0) scale(1); }

@@ -27,11 +27,13 @@ export default async function ChatPage() {
     .limit(12);
 
   return (
-    <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col px-4 py-8">
-      <h1 className="mb-1 flex items-center gap-2 text-3xl font-black">
-        <Pokeball size={30} /> Asistente
+    // Altura completa del viewport menos header (3.5rem) y, en mobile, la tab
+    // bar inferior (5rem) — el chat llena la pantalla sin scroll de página.
+    <main className="mx-auto flex h-[calc(100dvh-8.5rem)] w-full max-w-2xl flex-col px-4 py-4 sm:h-[calc(100dvh-3.5rem)] sm:py-6">
+      <h1 className="mb-1 flex items-center gap-2 text-2xl font-black sm:text-3xl">
+        <Pokeball size={28} /> Asistente
       </h1>
-      <p className="mb-6 text-sm text-muted">
+      <p className="mb-4 text-sm text-muted">
         Consulta y gestiona tu colección conversando. Usa herramientas reales — nada inventado.
       </p>
       <ChatWindow initialMessages={data ?? []} team={team ?? []} />
