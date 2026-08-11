@@ -140,15 +140,19 @@ LLM) · el botón de Google en una instancia propia requiere configurar el provi
   requiere sesión** — sin ella solo login/registro son visibles y accesibles) +
   **login con Google** (OAuth PKCE, callback propio; el perfil público se crea
   solo en el primer login — ver D14)
-- `/pokedex` — lista paginada con búsqueda, tipos coloreados y banner del entrenador
-  (pokébolas del equipo)
+- `/pokedex` — lista paginada con **búsqueda en tiempo real** (typeahead con
+  sprites), **filtro por generación** (I–IX, por rangos de id — cero fetches
+  extra), contador de progreso (capturados / existentes), pokébola en las cards
+  que ya son tuyas, toggle "mis capturados", tipos coloreados y banner del
+  entrenador
 - `/pokedex/[name]` — detalle con sprite **animado**, grito (audio), barras de stats,
   **movimientos como botones** (tocar = tipo/poder/precisión/PP desde PokéAPI) y
   flechas anterior/siguiente
 - `/collection` — perfil de entrenador (nombre + foto desde galería o cámara,
   **medallero** de 8 medallas por logros) y listado del equipo **estilo Game Boy**
   (sprites pixelados, barra de PS); soltar, editar nota; **solo tuya** (RLS)
-- Capturar dispara **confetti** y te lleva a la ficha del Pokémon atrapado
+- Capturar dispara **confetti**, scroll a la ficha, brinco de felicidad del
+  sprite, su grito y un toast "¡GOTCHA!" con acceso a la colección
 - `/trainers` — comunidad: directorio público de entrenadores y perfil de cada uno
   (foto, medallero y equipo — las notas personales siguen privadas, ver D12)
 - `/quien-es` — juego "¿Quién es ese Pokémon?" como en la serie (silueta + racha)

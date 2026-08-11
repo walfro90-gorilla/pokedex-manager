@@ -279,6 +279,19 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       real: ciclo de vida completo verde (add→note→directory→remove→resource).
       README bonus 2 actualizado. Dato: el directorio ya muestra 4 entrenadores —
       el perfil de r.torres se auto-creó con su login de Google (callback upsert).
+- [x] Mejoras UI/UX pokedex (2026-08-11, tarde): búsqueda en tiempo real
+      (typeahead client sobre índice nombre+id cacheado 24h), generación por
+      rangos de id (GENERATIONS en pokeapi.ts, cero fetches), filtro por gen +
+      toggle "mis capturados" + contador capturados/existentes + pokébola en
+      cards propias, y captura mejorada (scroll top + brinco poke-happy en CSS +
+      toast ¡GOTCHA!). Verificado en prod con screenshot. NOTA: disco local se
+      llenó al 100% a media sesión — npm cache clean liberó 4GB; los "errores"
+      de build eran ENOSPC.
+- [ ] Analizado y DIFERIDO a propósito (pedido del usuario, 2026-08-11): sexo
+      del pokémon + daycare/huevos. Requiere columna gender en collection
+      (migración), roll al capturar vía gender_rate de species (fetch extra),
+      tocar captureAction y add_pokemon del agente — demasiada superficie a
+      horas del freeze. Diseño en la conversación; post-entrega si se quiere.
 - [ ] F4 — falta: grabar el video (guion en docs/VIDEO-SCRIPT.md), pegar el
       link de Loom en el borrador de Gmail y enviarlo a
       cfernandez@febara.com.mx antes del miércoles mediodía. Tras grabar:

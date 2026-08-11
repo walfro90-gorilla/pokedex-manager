@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPokemonDetail } from "@/lib/pokeapi";
+import { getPokemonDetail, generationLabel } from "@/lib/pokeapi";
 import { createClient } from "@/lib/supabase/server";
 import { STAT_LABELS, STAT_MAX, typeColor } from "@/lib/pokemon-theme";
 import TypeBadge from "@/app/components/type-badge";
@@ -43,7 +43,9 @@ export default async function PokemonDetailPage({
 
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-8">
-      {captured === "1" && <CaptureCelebration />}
+      {captured === "1" && (
+        <CaptureCelebration name={pokemon.name} spriteUrl={pokemon.spriteUrl} />
+      )}
       <div className="flex items-center justify-between">
         <Link href="/pokedex" className="text-sm font-medium text-poke-blue hover:underline">
           ← Volver a la Pokédex
@@ -77,10 +79,20 @@ export default async function PokemonDetailPage({
           className="flex flex-col items-center px-6 pb-4 pt-8"
           style={{ background: `linear-gradient(180deg, ${mainColor}33, transparent)` }}
         >
-          <span className="pixel text-xs text-muted">#{String(pokemon.id).padStart(4, "0")}</span>
-          {/* Sprite animado (showdown) si existe; artwork oficial si no */}
+          <span className="pixel flex items-center gap-3 text-xs text-muted">
+            #{String(pokemon.id).padStart(4, "0")}
+            {generationLabel(pokemon.id) && (
+              <span className="rounded-full border-2 border-gray-200 px-2 py-0.5 text-[9px]">
+                GEN {generationLabel(pokemon.id)}
+              </span>
+            )}
+          </span>
+          {/* Sprite animado (showdown) si existe; artwork oficial si no.
+              Recién capturado (?captured=1): brinco de felicidad (poke-happy) */}
           {pokemon.animatedSpriteUrl ? (
-            <div className="flex h-[220px] items-center justify-center">
+            <div
+              className={`flex h-[220px] items-center justify-center ${captured === "1" ? "poke-happy" : ""}`}
+            >
               <Image
                 src={pokemon.animatedSpriteUrl}
                 alt={pokemon.name}
@@ -100,7 +112,7 @@ export default async function PokemonDetailPage({
               height={220}
               unoptimized
               priority
-              className="drop-shadow-md"
+              className={`drop-shadow-md ${captured === "1" ? "poke-happy" : ""}`}
             />
           )}
           <h1 className="mt-2 text-3xl font-black capitalize">{pokemon.name}</h1>
