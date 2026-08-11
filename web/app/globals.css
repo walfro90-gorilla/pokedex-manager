@@ -35,6 +35,19 @@ body {
 }
 
 /* Número de Pokédex estilo retro */
+/* Brinco de felicidad del sprite recién capturado (?captured=1) */
+@keyframes poke-happy {
+  0%, 100% { transform: translateY(0) scale(1); }
+  15% { transform: translateY(-18px) scale(1.04) rotate(-4deg); }
+  30% { transform: translateY(0) scale(0.97); }
+  45% { transform: translateY(-12px) scale(1.03) rotate(4deg); }
+  60% { transform: translateY(0) scale(0.98); }
+  75% { transform: translateY(-6px) scale(1.01); }
+}
+.poke-happy {
+  animation: poke-happy 1.4s ease-in-out 3;
+}
+
 .pixel {
   font-family: var(--font-pixel), monospace;
 }

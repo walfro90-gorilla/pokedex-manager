@@ -37,10 +37,53 @@ async function getAllNames(): Promise<{ name: string; url: string }[]> {
   return data.results;
 }
 
-export async function searchPokemon(query: string, page: number) {
+// Generación por rango de id — determinista, cero fetches extra.
+// Las formas alternas (id > 10000) heredan "—" (sin generación propia).
+export const GENERATIONS = [
+  { gen: 1, label: "I", from: 1, to: 151 },
+  { gen: 2, label: "II", from: 152, to: 251 },
+  { gen: 3, label: "III", from: 252, to: 386 },
+  { gen: 4, label: "IV", from: 387, to: 493 },
+  { gen: 5, label: "V", from: 494, to: 649 },
+  { gen: 6, label: "VI", from: 650, to: 721 },
+  { gen: 7, label: "VII", from: 722, to: 809 },
+  { gen: 8, label: "VIII", from: 810, to: 905 },
+  { gen: 9, label: "IX", from: 906, to: 1025 },
+] as const;
+
+export function generationLabel(id: number): string | null {
+  const g = GENERATIONS.find((g) => id >= g.from && id <= g.to);
+  return g ? g.label : null;
+}
+
+// Nombres+ids para la búsqueda instantánea del cliente (cache 24h vía getAllNames)
+export async function getSearchIndex(): Promise<{ name: string; id: number }[]> {
+  const all = await getAllNames();
+  return all.map((p) => ({ name: p.name, id: idFromUrl(p.url) }));
+}
+
+export async function searchPokemon(
+  query: string,
+  page: number,
+  gen?: number,
+  onlyIds?: Set<number>,
+) {
   const all = await getAllNames();
   const normalized = query.trim().toLowerCase();
-  const filtered = normalized ? all.filter((p) => p.name.includes(normalized)) : all;
+  let filtered = normalized ? all.filter((p) => p.name.includes(normalized)) : all;
+
+  const range = GENERATIONS.find((g) => g.gen === gen);
+  if (range) {
+    filtered = filtered.filter((p) => {
+      const id = idFromUrl(p.url);
+      return id >= range.from && id <= range.to;
+    });
+  }
+
+  // Filtro "mis capturados": solo los ids de la colección del usuario
+  if (onlyIds) {
+    filtered = filtered.filter((p) => onlyIds.has(idFromUrl(p.url)));
+  }
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const safePage = Math.min(Math.max(1, page), totalPages);
