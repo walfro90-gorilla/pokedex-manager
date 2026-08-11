@@ -136,9 +136,10 @@ LLM) · el botón de Google en una instancia propia requiere configurar el provi
 ## Funcionalidades
 
 **Core**
-- Registro / login / logout (Supabase Auth, Server Actions, middleware de rutas
-  protegidas) + **login con Google** (OAuth PKCE, callback propio; el perfil
-  público se crea solo en el primer login — ver D14)
+- Registro / login / logout (Supabase Auth, Server Actions; **toda la app
+  requiere sesión** — sin ella solo login/registro son visibles y accesibles) +
+  **login con Google** (OAuth PKCE, callback propio; el perfil público se crea
+  solo en el primer login — ver D14)
 - `/pokedex` — lista paginada con búsqueda, tipos coloreados y banner del entrenador
   (pokébolas del equipo)
 - `/pokedex/[name]` — detalle con sprite **animado**, grito (audio), barras de stats,
@@ -200,6 +201,12 @@ LLM) · el botón de Google en una instancia propia requiere configurar el provi
   analíticas sobre TU colección con datos reales ("¿cuál de los míos tiene más
   ataque?"), comparativas entre Pokémon y sugerencias — siempre vía tools, nunca
   inventando datos
+- **Sugerencias contextuales según tu equipo**: chips generados de tu colección
+  real ("¿qué complementaría a [tu más fuerte]?", comparativas entre los tuyos),
+  siempre a la mano sobre el input
+- Resiliencia ante fallas del provider: el 400 `tool_use_failed` estocástico de
+  Groq se reintenta y degrada a texto en vez de romper el chat (bug real de
+  producción, cazado y documentado en D15)
 - Las tools llaman a Supabase con el JWT del usuario → RLS aplica también dentro del agente
 
 ## QA
@@ -237,7 +244,7 @@ futura: upscaling previo o few-shot con ejemplos pixelados.
 
 ## Decisiones y trade-offs
 
-Versión corta (completa en `docs/DECISIONS.md`, D1–D14):
+Versión corta (completa en `docs/DECISIONS.md`, D1–D15):
 
 - **Monorepo TS + Python** — cada lenguaje donde es más fuerte (D1)
 - **Supabase con RLS** en vez de auth artesanal — la seguridad no depende de no

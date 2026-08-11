@@ -60,6 +60,23 @@ login/redirects; 404 + manifest.
 - **Clone limpio**: repo fresco + pasos del README + `docker compose up --build`
   → web 200, health OK, identify correcto.
 
+## Incidente de producción: cazado, arreglado y verificado (2026-08-10)
+
+El chat fallaba con 502 **solo en cuentas con historial largo**. Diagnóstico:
+se agregó el body del error del provider a los logs (antes solo un 400 mudo) y
+apareció la causa — `tool_use_failed` de Groq: el modelo emite a veces sintaxis
+de herramienta malformada y Groq rechaza la generación completa (estocástico;
+el replay exacto del payload devolvía 200). Fix: retry + degradación a
+`tool_choice: "none"` (ver D15). **Verificación**: 5/5 preguntas gatillo contra
+producción respondidas, con 12 fallos internos absorbidos según los logs.
+
+## Pase MCP — ciclo de vida completo (2026-08-11, cliente MCP real)
+
+initialize → list_tools (6) → list_resources → list_prompts (2, con argumento) →
+`search_pokeapi` → `add_pokemon` → `update_note` → `trainer_directory` →
+`remove_pokemon` → el resource `collection://mine` confirma la ausencia.
+Todo contra el Supabase vivo con JWT de la cuenta demo (RLS activo). Verde.
+
 ## Quirks conocidos (de testing, no bugs de producto)
 
 - Los forms de Server Actions no disparan con click/Enter simulados del
