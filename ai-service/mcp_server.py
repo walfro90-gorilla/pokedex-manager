@@ -42,8 +42,13 @@ _token: dict = {"jwt": None, "exp": 0.0}
 
 async def _user_jwt() -> str:
     """Login por password contra Supabase Auth; cachea el JWT y re-loguea al
-    expirar. La sesión pertenece a un usuario real — RLS decide qué ve."""
-    if _token["jwt"] and time.monotonic() < _token["exp"]:
+    expirar. La sesión pertenece a un usuario real — RLS decide qué ve.
+
+    El reloj es time.time() (wall-clock), no monotonic: la vida del JWT se
+    valida en tiempo real. Con monotonic, suspender la máquina congelaba el
+    reloj del proceso y dejaba un token muerto que el cache creía fresco
+    (401 permanente hasta reiniciar el servidor)."""
+    if _token["jwt"] and time.time() < _token["exp"]:
         return _token["jwt"]
     url = os.environ["SUPABASE_URL"]
     anon = os.environ["SUPABASE_ANON_KEY"]
@@ -58,15 +63,29 @@ async def _user_jwt() -> str:
     r.raise_for_status()
     data = r.json()
     _token["jwt"] = data["access_token"]
-    _token["exp"] = time.monotonic() + data.get("expires_in", 3600) - 60
+    _token["exp"] = time.time() + data.get("expires_in", 3600) - 60
     return _token["jwt"]
+
+
+async def _call_tool(name: str, args: dict):
+    """Ejecuta una tool del agente con el JWT del usuario. Si el token sale
+    401 (revocado o reloj), invalida el cache, re-loguea y reintenta UNA vez.
+    Seguro incluso en escrituras: un 401 significa que la petición fue
+    rechazada antes de ejecutarse — no hubo efecto que duplicar."""
+    try:
+        return await TOOL_IMPL[name](await _user_jwt(), args)
+    except httpx.HTTPStatusError as e:
+        if e.response is None or e.response.status_code != 401:
+            raise
+        _token["jwt"] = None
+        return await TOOL_IMPL[name](await _user_jwt(), args)
 
 
 @mcp.tool()
 async def query_collection() -> list:
     """Consulta la colección del usuario autenticado: Pokémon capturados
     con tipos, stats, notas y fecha de captura."""
-    return await TOOL_IMPL["query_collection"](await _user_jwt(), {})
+    return await _call_tool("query_collection", {})
 
 
 @mcp.tool()
@@ -80,14 +99,13 @@ async def search_pokeapi(name_or_id: str) -> dict:
 async def add_pokemon(pokemon_id: int, notes: str | None = None) -> dict:
     """Agrega un Pokémon a la colección por su id numérico de PokéAPI.
     Se verifica contra PokéAPI antes de insertar (anti-alucinación)."""
-    return await TOOL_IMPL["add_pokemon"](
-        await _user_jwt(), {"pokemon_id": pokemon_id, "notes": notes})
+    return await _call_tool("add_pokemon", {"pokemon_id": pokemon_id, "notes": notes})
 
 
 @mcp.resource("collection://mine")
 async def collection_resource() -> str:
     """La colección completa del usuario como recurso JSON de solo lectura."""
-    rows = await TOOL_IMPL["query_collection"](await _user_jwt(), {})
+    rows = await _call_tool("query_collection", {})
     return json.dumps(rows, ensure_ascii=False, indent=2)
 
 
