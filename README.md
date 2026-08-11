@@ -180,14 +180,38 @@ LLM) · el botón de Google en una instancia propia requiere configurar el provi
 - Misma postura de seguridad que todo el sistema: el servidor se autentica como un
   **usuario real** (login contra Supabase Auth, JWT cacheado con renovación y retry
   en 401) — RLS decide qué ve, sin service key
-- Registro en **una línea** (las credenciales de Supabase se leen solas de
-  `ai-service/.env`, que ya llenaste para el servicio):
+- **Configurarlo (2 pasos):**
+
   ```bash
+  # 1. Dependencias (una vez; el compose no crea este venv local)
+  cd ai-service && python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+
+  # 2. Registrarlo en Claude Code — las credenciales de Supabase se leen
+  #    solas de ai-service/.env (ya llenado para el servicio)
   claude mcp add pokedex \
     -e POKEDEX_EMAIL=pokedex-qa-01@e2etest.dev -e POKEDEX_PASSWORD='TestPass123!' \
-    -- <repo>/ai-service/.venv/bin/python <repo>/ai-service/mcp_server.py
+    -- "$PWD/.venv/bin/python" "$PWD/mcp_server.py"
   ```
-  (Claude Desktop: mismo comando y env en `claude_desktop_config.json`.)
+
+  Verificar: `claude mcp list` debe mostrar `pokedex ✔ Connected` (o `/mcp`
+  dentro de una sesión). En **Claude Desktop** es el mismo comando y env en
+  `claude_desktop_config.json`:
+  ```json
+  { "mcpServers": { "pokedex": {
+      "command": "<repo>/ai-service/.venv/bin/python",
+      "args": ["<repo>/ai-service/mcp_server.py"],
+      "env": { "POKEDEX_EMAIL": "pokedex-qa-01@e2etest.dev",
+               "POKEDEX_PASSWORD": "TestPass123!" } } } }
+  ```
+
+- **Usarlo** (sesión nueva de Claude Code, lenguaje natural):
+  - *"¿Qué Pokémon hay en mi colección?"* · *"Busca a snorlax y agrégalo"* ·
+    *"Ponle la nota 'mi favorito' a pikachu"* · *"Suelta a ditto"* ·
+    *"¿Quiénes son los otros entrenadores?"*
+  - O directo con los slash commands: `/mcp__pokedex__analizar_coleccion` y
+    `/mcp__pokedex__capturar` (pide el nombre)
+  - Cada llamada viaja con el JWT de la cuenta configurada — RLS aplica igual
+    que en la web; lo que agregues aquí aparece en https://209-50-54-47.sslip.io
 - Distinción honesta: el agente de `/chat` usa function calling estilo OpenAI
   (loop a mano, ver D3); este servidor habla el **protocolo MCP** real. Son dos
   mecanismos distintos y el repo demuestra ambos (ver D13)
