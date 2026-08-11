@@ -287,11 +287,12 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       toast ¡GOTCHA!). Verificado en prod con screenshot. NOTA: disco local se
       llenó al 100% a media sesión — npm cache clean liberó 4GB; los "errores"
       de build eran ENOSPC.
-- [ ] Analizado y DIFERIDO a propósito (pedido del usuario, 2026-08-11): sexo
-      del pokémon + daycare/huevos. Requiere columna gender en collection
-      (migración), roll al capturar vía gender_rate de species (fetch extra),
-      tocar captureAction y add_pokemon del agente — demasiada superficie a
-      horas del freeze. Diseño en la conversación; post-entrega si se quiere.
+- [x] D16 escrito (2026-08-11): diseño completo de la siguiente iteración —
+      F5.1 gender (columna nullable + roll con gender_rate), F5.2 daycare
+      (tabla daycare_pairs con RLS, egg groups, huevo por tiempo sin cron),
+      F5.3 híbridos por IA (LLM redacta prompt maestro validado, Nano Banana/
+      Gemini genera la imagen, stats deterministas, tabla+bucket propios, NUNCA
+      en collection). Implementación DIFERIDA a post-entrega a propósito.
 - [ ] F4 — falta: grabar el video (guion en docs/VIDEO-SCRIPT.md), pegar el
       link de Loom en el borrador de Gmail y enviarlo a
       cfernandez@febara.com.mx antes del miércoles mediodía. Tras grabar:
