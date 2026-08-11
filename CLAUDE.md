@@ -261,8 +261,17 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
       none en _chat_completion; main.py ahora loguea el body del error del
       provider. Stress test: 5/5 con 12 fallos internos absorbidos. Jamás
       resetear historial de usuario por esto.
-- [ ] F4 — falta: video (guion listo en la conversación), enviar el borrador de
-      Gmail a cfernandez@febara.com.mx antes del miércoles mediodía
+- [x] F4 prep (2026-08-11) — guion del video regenerado y guardado en
+      docs/VIDEO-SCRIPT.md (el original vivía solo en una conversación y se
+      perdió); incluye pre-flight y post-grabación. Cuenta demo QA re-limpiada
+      a 0 (collection + chat_messages, vía REST con JWT propio — PostgREST
+      exige filtro real en DELETE, `?id=not.is.null`). Pre-flight verificado:
+      prod https vivo (web 200, /health ok), MCP local responde.
+- [ ] F4 — falta: grabar el video (guion en docs/VIDEO-SCRIPT.md), pegar el
+      link de Loom en el borrador de Gmail y enviarlo a
+      cfernandez@febara.com.mx antes del miércoles mediodía. Tras grabar:
+      verificar que la cuenta demo quedó poblada (el README lo promete) —
+      reponer avatar/nombre si el video no los cubre.
 - NOTA sesión: ai-service NO carga .env solo — arrancar con `set -a; source .env; set +a`
   antes de uvicorn (o usar docker compose que sí usa env_file). GROQ_API_KEY real ya
   está en ai-service/.env (gitignored).
