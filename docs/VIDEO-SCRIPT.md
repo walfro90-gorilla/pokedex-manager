@@ -1,104 +1,97 @@
 # Guion del video de entrega — PokéDex Manager (Loom ≤ 5 min)
 
-> Objetivo: 4:00–4:30. Límite duro: 5:00. Una sola toma si sale bien; si te
-> trabas, sigue — el evaluador valora ver el producto corriendo, no la perfección.
-> Narrar en español, ritmo tranquilo. El orden sigue los criterios de evaluación
-> del brief: funcionalidad → código/UI → arquitectura → bonus.
+> Objetivo: 3:30–4:30. Límite duro: 5:00. Si una escena sale mal, corta y
+> repite SOLO esa (Loom permite recortar) — no regrabes todo. Narrar en
+> español, ritmo tranquilo. El orden sigue los criterios del brief:
+> funcionalidad → UI → arquitectura → bonus (cierra con el MCP, lo más raro
+> de ver en un take-home).
 
 ## Pre-flight (antes de grabar)
 
-- [x] Producción viva: https://209-50-54-47.sslip.io (web) y
-      https://api.209-50-54-47.sslip.io/health — verificado 2026-08-11
-- [x] Cuenta demo en cero: colección y chat de `pokedex-qa-01@e2etest.dev`
-      vacíos (el video muestra el viaje desde cero y la deja poblada para el
-      evaluador, como anuncia el README)
-- [ ] Ventana de **incógnito** (o localStorage limpio): así aparece el tour de
-      bienvenida al primer login y el banner de instalación PWA
-- [ ] Pestañas abiertas en orden: (1) /login del deploy, (2) repo en GitHub
-      con el README, (3) Swagger https://api.209-50-54-47.sslip.io/docs,
-      (4) Claude Code/Desktop con el servidor MCP `pokedex` registrado
-- [ ] Una imagen Pokémon a la mano para /identify (carta física al teléfono o
-      un JPG de artwork en el escritorio)
-- [ ] Notificaciones del sistema apagadas, Loom a 720p+, micrófono probado
+- [ ] Producción viva: https://209-50-54-47.sslip.io y
+      https://api.209-50-54-47.sslip.io/health responde ok
+- [ ] Cuenta demo (`pokedex-qa-01@e2etest.dev` / `TestPass123!`) **en cero** —
+      el video muestra el viaje desde cero Y la deja poblada para el evaluador,
+      como promete el README
+- [ ] Ventana de **incógnito** con SONIDO permitido: así aparece el tour de
+      bienvenida y se escucha el grito al capturar
+- [ ] Pestañas en orden: (1) /login del deploy, (2) /collection (para el
+      momento MCP), (3) repo en GitHub con el README
+- [ ] Terminal con **Claude Code** abierto en el repo (server MCP `pokedex` ya
+      registrado — verificar con `claude mcp list`)
+- [ ] `evals/images/bulbasaur_artwork.png` a la mano para /identify
+- [ ] Notificaciones apagadas, Loom a 720p+, micrófono probado
 
 ## Escenas
 
-### 1. Hook (0:00–0:15)
+### 1. Hook + tour (0:00–0:25)
 **Pantalla:** /login del deploy.
-**Dices:** "Esta es PokéDex Manager, mi entrega para la evaluación: una app
-full-stack — Next.js, Supabase con RLS y un microservicio de IA en Python —
-desplegada y funcionando en esta URL, e instalable como PWA. Les muestro lo que
-hace y luego las decisiones de arquitectura."
+**Haces:** señala el botón "Continuar con Google" (no lo uses), entra con la
+cuenta demo. Aparece el tour: pasa 2 pasos, "Saltar".
+**Dices:** "PokéDex Manager: full-stack con Next.js, Supabase con Row Level
+Security y un microservicio de IA en Python, desplegada con HTTPS e instalable
+como PWA. Hay login con correo y con Google, toda la app requiere sesión, y al
+primer ingreso un tour de 9 pasos te presenta cada función."
 
-### 2. Auth + tour (0:15–0:40)
-**Haces:** login con la cuenta demo (`pokedex-qa-01@e2etest.dev`). Sale el tour
-de bienvenida; pasa 2–3 pasos rápido y ciérralo.
-**Dices:** "El registro pide confirmar el correo — lo dejé activo a propósito,
-es el comportamiento production-grade; está documentado en el README. El tour
-guía a usuarios nuevos por las nueve funciones."
+### 2. Pokédex viva (0:25–0:55)
+**Haces:** en el buscador teclea "meow" → aparece el dropdown con sprites en
+tiempo real. Antes de abrir, click en GEN IV (2 seg, muestra turtwig y cía),
+regresa a TODAS. Señala el contador "0 / 1351 capturados". Abre **meowth**
+desde el dropdown.
+**Dices:** "Búsqueda en tiempo real sobre más de mil trescientos Pokémon,
+filtro por generación calculado por rangos de id — cero llamadas extra — y un
+contador de progreso de captura."
 
-### 3. Pokédex + captura (0:40–1:25)
-**Haces:** en /pokedex busca "pika" → abre a Pikachu (se oye el grito, sprite
-animado) → toca un movimiento para ver su detalle → **Capturar** → confetti y
-redirect a la ficha → ve a "Mi colección": perfil de entrenador, medallero y
-equipo estilo Game Boy.
-**Dices:** "La pokédex corre sobre PokéAPI, que es la fuente de verdad; con
-búsqueda, paginación y detalle completo. Capturar guarda un snapshot en mi
-colección — y la colección es solo mía: el aislamiento lo hace Postgres con
-Row Level Security, no el código de la aplicación."
+### 3. Ficha + captura (0:55–1:30)
+**Haces:** en la ficha de meowth: sprite animado, badge GEN I, click en un
+movimiento (se expande con tipo/poder/precisión/PP), señala las flechas
+◀ ▶. Click **¡Capturar!** → suena el grito → confetti + brinco del sprite +
+toast "¡GOTCHA!". Click "Ver en mi colección" → tarjeta de entrenador,
+medallero (cae la primera medalla), equipo estilo Game Boy.
+**Dices:** "Ficha viva: sprite animado, movimientos con datos en vivo de
+PokéAPI. Y al capturar: su grito, confetti y directo a mi colección — que
+persiste en Postgres, aislada por usuario con RLS. La seguridad vive en la
+base de datos, no en el código."
 
-### 4. Bonus 1 — Identificación por imagen (1:25–2:10)
-**Haces:** /identify → sube la imagen preparada (o usa el Modo Pokédex con la
-cámara si grabas también el teléfono) → la IA identifica → **¡Capturar!**.
-**Dices:** "El bonus de visión: la foto va a un microservicio FastAPI con una
-cadena de providers — Groq, Gemini, Anthropic, con fallback. El modelo propone
-un nombre y el servicio lo verifica contra PokéAPI antes de confiar: si alucina,
-se rechaza. Corrí evals sobre 10 imágenes: 8/10 — las dos que fallan son
-sprites de 96 pixeles, y esa limitación quedó documentada en el README."
+### 4. Bonus 1 — Identificar por imagen (1:30–2:00)
+**Haces:** /identify → sube `bulbasaur_artwork.png` → identifica → capturar
+en un click. (Si tienes webcam: 5 seg del Modo Pokédex con el visor.)
+**Dices:** "Identificación con un modelo de visión multimodal — y el nombre
+que devuelve se verifica contra PokéAPI antes de aceptarse: anti-alucinación.
+Está medido con evals: ocho de diez, con las fallas documentadas en el README."
 
-### 5. Bonus 3 — Chat con tool calling (2:10–2:55)
-**Haces:** /chat → chip o pregunta "¿Qué Pokémon tengo?" → se ven las cards de
-tu equipo real → sigue con "¿Qué Pokémon me recomiendas agregar según mi
-equipo?". Muestra que la respuesta usa datos reales.
-**Dices:** "El asistente es un loop de tool calling escrito a mano, sin
-frameworks: el modelo pide herramientas y código determinista las ejecuta.
-Las herramientas llaman a Supabase con MI token de usuario — la RLS aplica
-también dentro del agente, y el servicio de IA no tiene service key. El
-historial persiste entre dispositivos."
+### 5. Bonus 3 — Asistente (2:00–2:30)
+**Haces:** /chat (pantalla completa) → click al chip contextual "¿Qué Pokémon
+complementaría a Meowth en mi equipo?" → responde con análisis + cards.
+**Dices:** "Agente conversacional con tool calling escrito a mano, sin
+frameworks. Los chips se generan de MI equipo real, el historial persiste en
+la base, y nunca inventa datos: cada respuesta sale de sus herramientas."
 
-### 6. Comunidad + juego + PWA (2:55–3:20) — montaje rápido
-**Haces:** /trainers (directorio con medalleros) → perfil de un entrenador →
-/quien-es (una ronda) → si estás en incógnito desktop, muestra el ícono de
-instalar PWA.
-**Dices:** "Capa social sin abrir los datos: el directorio sale de funciones
-security definer con contrato mínimo — la colección y las notas privadas jamás
-se exponen. Y la app es instalable: HTTPS con Caddy y certificados automáticos
-sobre el mismo VPS."
+### 6. Bonus 2 — MCP, el cierre fuerte (2:30–3:15)
+**Pantalla:** dividida — Claude Code izquierda, /collection derecha.
+**Haces:** en Claude Code escribe **"agrega a eevee a mi colección"** → el
+server MCP ejecuta add_pokemon → refresca /collection → eevee aparece en el
+equipo.
+**Dices:** "Y esto es un servidor MCP real — el protocolo, no solo function
+calling: seis herramientas, la colección como resource, y prompts que Claude
+expone como slash commands. Reutiliza las mismas implementaciones del agente y
+se autentica como un usuario normal: RLS aplica igual que en la web. Lo que
+Claude captura aquí… aparece allá."
 
-### 7. Bonus 2 — Servidor MCP (3:20–3:50)
-**Pantalla:** Claude Code/Desktop. Pide: "¿qué pokémon tengo en mi colección?"
-→ el cliente llama `query_collection` del servidor MCP `pokedex`.
-**Dices:** "El segundo bonus pedía MCP específicamente: escribí un servidor MCP
-stdio con el SDK oficial, que reutiliza las mismas implementaciones de las
-herramientas del agente — cero duplicación — y se autentica como un usuario
-real, con RLS. El chat usa function calling; esto es el protocolo MCP real. El
-repo demuestra ambos."
-
-### 8. Arquitectura + cierre (3:50–4:30)
-**Pantalla:** README en GitHub (diagrama de arquitectura) → scroll a
-Decisiones → sección "Correrlo localmente".
-**Dices:** "Todo lo que vieron corre con el mismo docker compose que está en el
-repo: clonar, llenar dos archivos de entorno, `docker compose up`. Las
-decisiones clave están en el README y en docs/DECISIONS.md: RLS como seguridad
-real, cadena de providers con fallback — que se pagó sola cuando Groq retiró su
-modelo de visión a mitad del desarrollo — y validación anti-alucinación en
-toda salida del modelo. Gracias por ver; los links están en el correo."
+### 7. Comunidad + cierre (3:15–3:45)
+**Haces:** /trainers (directorio, perfil público de Gary con su medallero,
+3 seg) → /quien-es (una silueta, 3 seg) → pestaña del README en GitHub
+(scroll rápido por decisiones y QA).
+**Dices:** "Hay también comunidad de entrenadores con perfiles públicos — sin
+exponer jamás la tabla de colecciones — y el juego de la serie. Todo el
+razonamiento está documentado: dieciséis decisiones técnicas con sus
+trade-offs, matriz de QA contra producción y evals. Gracias por la revisión."
 
 ## Post-grabación
 
-- [ ] Pegar el link de Loom en el borrador de Gmail (texto listo abajo)
-- [ ] Verificar que la cuenta demo quedó con los pokémon capturados en el video
-      (el README promete "equipo, avatar y medallero ya poblados" — si falta
-      avatar/nombre, ponérselos rápido desde /collection)
-- [ ] Enviar a **cfernandez@febara.com.mx** antes del miércoles mediodía
-- [ ] Actualizar "Estado actual" en CLAUDE.md
+- [ ] La cuenta demo quedó poblada por el video mismo (meowth + bulbasaur +
+      eevee, medallero iniciado) — cumple lo que el README promete ✓
+- [ ] Subir a Loom → pegar el link en el borrador de Gmail (ya existe, a
+      cfernandez@febara.com.mx) y enviarlo antes del miércoles mediodía
+- [ ] Opcional: link del video también en el README (una línea junto a la
+      demo en vivo)
