@@ -4,7 +4,7 @@ Aplicación full-stack para gestionar una colección personal de Pokémon, con c
 identificación de Pokémon por imagen (modelo multimodal) y un asistente conversacional
 con tool calling sobre la colección del usuario.
 
-**Demo en vivo:** https://209-50-54-47.sslip.io · **AI service:** https://api.209-50-54-47.sslip.io/docs
+**Demo en vivo:** https://209-50-54-47.sslip.io · **AI service:** https://api.209-50-54-47.sslip.io/docs · **Video (4 min):** https://youtu.be/4EHL-OPYgPo
 
 Instalable como **PWA** (Chrome/Edge: ícono de instalar en la barra de direcciones;
 móvil: "Agregar a pantalla de inicio").
