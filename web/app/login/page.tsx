@@ -27,6 +27,12 @@ export default async function LoginPage({
           <p className="mb-4 rounded-xl bg-red-50 px-4 py-2.5 text-sm text-red-700">{error}</p>
         )}
 
+        {/* Cuenta demo prellenada (pública en el README a propósito):
+            el evaluador entra con un solo click en Entrar. */}
+        <p className="mb-4 rounded-xl bg-blue-50 px-4 py-2.5 text-sm text-blue-700">
+          Cuenta demo lista — solo presiona <strong>Entrar</strong>.
+        </p>
+
         <form action={login} className="flex flex-col gap-4">
           <input type="hidden" name="redirectTo" value={redirectTo ?? "/pokedex"} />
 
@@ -37,6 +43,7 @@ export default async function LoginPage({
               type="email"
               required
               autoComplete="email"
+              defaultValue="pokedex-qa-01@e2etest.dev"
               className="rounded-full border-2 border-gray-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-poke-blue"
             />
           </label>
@@ -48,6 +55,7 @@ export default async function LoginPage({
               type="password"
               required
               autoComplete="current-password"
+              defaultValue="TestPass123!"
               className="rounded-full border-2 border-gray-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-poke-blue"
             />
           </label>
