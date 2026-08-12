@@ -1,12 +1,17 @@
 # Plan por fases con acceptance criteria
 
+> **Documento de planeación (histórico).** El estado FINAL del proyecto vive en
+> el README y en `docs/QA-TESTING.md`; este plan se conserva porque muestra cómo
+> se organizó el trabajo. Resultado: F1, F2 y F3 completados y verificados en
+> producción; F4 (video + correo) es el único paso restante al 2026-08-11.
+
 > Alineado contra el brief oficial del cliente (evaluación recibida, ver D9 en
 > DECISIONS.md). Requisito explícito del brief: **"No es necesario que la aplicación
 > esté desplegada en producción"** — deploy queda como stretch goal, no como AC
 > bloqueante de ninguna fase. Se mantiene en el plan si el tiempo alcanza porque
 > reduce fricción de evaluación, pero nunca a costa de core/bonus documentados.
 
-## F1 — Core web (lunes) — CASI LISTO
+## F1 — Core web (lunes) — ✅ COMPLETADO
 **AC:** un usuario nuevo puede registrarse, loguearse, navegar la pokédex paginada
 con búsqueda, ver detalle con stats/tipos, capturar/soltar pokémon con nota, y su
 colección persiste y es SOLO suya (verificar con 2 cuentas). Responsive en 375px.
@@ -14,11 +19,10 @@ Deploy en Vercel es stretch, no bloqueante.
 
 Tareas: setup Supabase clients (browser/server) ✅ → páginas auth + middleware ✅ →
 /pokedex lista+búsqueda ✅ → /pokedex/[name] detalle ✅ → /collection CRUD ✅ →
-responsive pass (⚠️ pendiente confirmar visualmente a 375px — implementado
-mobile-first pero sin verificación real en browser, ver Estado actual en CLAUDE.md)
-→ (stretch) deploy.
+responsive pass ✅ (verificado a 375px) → deploy ✅ (superó el stretch: VPS con
+HTTPS y PWA, ver D11).
 
-## F2 — IA en frontend (martes) — CASI LISTO (adelantado)
+## F2 — IA en frontend (martes) — ✅ COMPLETADO (adelantado)
 **AC:** subir una foto de un Pokémon lo identifica y permite agregarlo en 2 clics;
 el chat responde preguntas sobre MI colección usando tools (verificable en la traza);
 evals corren con ≥10 imágenes y el resultado queda en el README. Deploy del
@@ -33,7 +37,7 @@ CORS/env de prod (CORS ya configurable vía CORS_ORIGINS).
 Todo verificado en browser real: upload→identifica pikachu (100% groq)→captura
 autenticada; chat responde con datos reales de la colección + traza de tools.
 
-## F3+F4 — Entrega (miércoles) — TODO
+## F3+F4 — Entrega (miércoles) — F3 ✅ / F4 en curso (video + correo)
 **AC:** un evaluador clona el repo, sigue el README y lo levanta con docker compose
 sin ayuda; README con arquitectura, decisiones y evals; video Loom ≤5 min; correo
 enviado a cfernandez@febara.com.mx antes de mediodía con repo + video (+ deploy si
