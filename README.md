@@ -270,12 +270,35 @@ al modelo de visión (confidence alta y respuesta equivocada — el peor tipo de
 Con imágenes normales (fotos, cartas, artwork) el desempeño es consistente. Mitigación
 futura: upscaling previo o few-shot con ejemplos pixelados.
 
+## Roadmap — siguiente iteración: guardería y crianza (D16)
+
+Diseñada y documentada a propósito en vez de implementada a medias la víspera
+de la entrega (el diseño completo vive en `docs/DECISIONS.md`, D16). Tres fases
+incrementales que no rompen nada de lo existente:
+
+1. **F5.1 — Sexo del Pokémon**: columna `gender` *nullable* en la colección;
+   se sortea al capturar con el `gender_rate` real de PokéAPI. Filas históricas
+   quedan "desconocido"; si el fetch falla, la captura continúa.
+2. **F5.2 — Guardería (daycare)**: parejas compatibles por `egg_groups` de
+   PokéAPI y sexos opuestos (regla Ditto incluida), tabla propia con el mismo
+   patrón RLS, y huevos por **tiempo puro** (`egg_ready_at`) — sin crons ni
+   workers.
+3. **F5.3 — Híbridos generados por IA** ⭐: al cruzar especies distintas nace
+   un Pokémon único. El LLM redacta un **prompt maestro** validado (Pydantic)
+   con los rasgos reales de ambos padres y **Nano Banana (Gemini)** genera la
+   imagen. Lo crítico sigue siendo determinista: stats = promedio de padres ±
+   5%, nombre validado para NO existir en PokéAPI (anti-alucinación invertida),
+   y los híbridos viven en tabla y bucket propios — nunca en `collection`:
+   PokéAPI sigue siendo la única fuente de verdad de especies reales. Límite de
+   1 eclosión/usuario/día para controlar el costo de generación.
+
+El mismo principio que gobierna todo el repo, aplicado al caso más creativo:
+**el LLM propone (describe, redacta); el código dispone (stats, validación,
+persistencia).**
+
 ## Decisiones y trade-offs
 
-Versión corta (completa en `docs/DECISIONS.md`, D1–D16 — la D16 es el diseño de
-la siguiente iteración: guardería, crianza e **híbridos únicos generados por IA**
-con prompt maestro redactado por LLM e imagen de Gemini, documentado a propósito
-en vez de implementado a medias la víspera de la entrega):
+Versión corta (completa en `docs/DECISIONS.md`, D1–D16):
 
 - **Monorepo TS + Python** — cada lenguaje donde es más fuerte (D1)
 - **Supabase con RLS** en vez de auth artesanal — la seguridad no depende de no
