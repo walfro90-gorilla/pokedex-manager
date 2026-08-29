@@ -301,3 +301,10 @@ Actualizar esta sección al cerrar cada sesión de trabajo (esta es la memoria e
 - NOTA sesión: ai-service NO carga .env solo — arrancar con `set -a; source .env; set +a`
   antes de uvicorn (o usar docker compose que sí usa env_file). GROQ_API_KEY real ya
   está en ai-service/.env (gitignored).
+- [x] Server UpCloud BORRADO permanentemente (2026-08-28) — take-home ya
+      entregado. https://209-50-54-47.sslip.io y :3000/:8000 muertos (verificado
+      SSH timeout + HTTP 000). Paquete de rescate en ~/upcloud-rescue/pokedex-chi1/
+      (REBUILD.md con receta de redeploy completa, .env del server cifrados con
+      age contra la llave SSH local, CLEARANCE.md: cero código sin pushear, cero
+      keys exclusivas del server). Supabase sigue vivo e intacto; su Site URL
+      apunta a la URL muerta — solo importa si hay registros nuevos.
