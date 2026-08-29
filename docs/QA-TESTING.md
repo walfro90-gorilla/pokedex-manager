@@ -1,5 +1,9 @@
 # QA — Hard testing contra producción
 
+> **Registro histórico (agosto 2026):** este pase se corrió contra el deploy de
+> producción, que se dio de baja tras la entrega (D17). Las URLs de abajo ya no
+> responden; el documento se conserva como evidencia de lo que se probó y cómo.
+
 Método: pruebas manuales automatizadas en browser real (Chrome) contra el deploy
 de producción `https://209-50-54-47.sslip.io`, más batería HTTP (curl) y un
 cliente MCP real para el servidor del bonus 2. Cuenta de prueba: la cuenta demo

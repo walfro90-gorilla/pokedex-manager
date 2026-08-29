@@ -4,14 +4,23 @@ Aplicación full-stack para gestionar una colección personal de Pokémon, con c
 identificación de Pokémon por imagen (modelo multimodal) y un asistente conversacional
 con tool calling sobre la colección del usuario.
 
-**Demo en vivo:** https://209-50-54-47.sslip.io · **AI service:** https://api.209-50-54-47.sslip.io/docs · **Video (4 min):** https://youtu.be/4EHL-OPYgPo
+**Video (4 min):** https://youtu.be/4EHL-OPYgPo
+
+> **Nota (agosto 2026):** el take-home ya fue entregado y el servidor de la demo en
+> vivo (`https://209-50-54-47.sslip.io`) se dio de baja para no seguir pagándolo. El
+> video sigue mostrando la app completa en funcionamiento, y `docker compose up`
+> levanta todo localmente en un par de minutos (ver *Cómo correrlo*). La receta exacta
+> del deploy que corría en producción está en `docker-compose.prod.yml` + `Caddyfile`
+> (D11): en un VPS nuevo, solo cambia la IP del `Caddyfile` y Caddy re-emite los
+> certificados solo.
 
 Instalable como **PWA** (Chrome/Edge: ícono de instalar en la barra de direcciones;
 móvil: "Agregar a pantalla de inicio").
 
-> **Cuenta demo** para probar la demo en vivo sin registrarse (la confirmación de
-> email está activa a propósito, ver D8): `pokedex-qa-01@e2etest.dev` /
-> `TestPass123!` — con equipo, avatar y medallero ya poblados.
+> **Cuenta demo** para probar sin registrarse (la confirmación de email está activa a
+> propósito, ver D8): `pokedex-qa-01@e2etest.dev` / `TestPass123!` — con equipo, avatar
+> y medallero ya poblados. Sigue viva: la base de datos es Supabase hosted y no dependía
+> del servidor dado de baja.
 
 ![PokéDex Manager](docs/screenshot.jpg)
 
@@ -215,7 +224,8 @@ LLM) · el botón de Google en una instancia propia requiere configurar el provi
   - O directo con los slash commands: `/mcp__pokedex__analizar_coleccion` y
     `/mcp__pokedex__capturar` (pide el nombre)
   - Cada llamada viaja con el JWT de la cuenta configurada — RLS aplica igual
-    que en la web; lo que agregues aquí aparece en https://209-50-54-47.sslip.io
+    que en la web; lo que agregues aquí aparece en la app (Supabase es la misma
+    base para el MCP y para la web local)
 - Distinción honesta: el agente de `/chat` usa function calling estilo OpenAI
   (loop a mano, ver D3); este servidor habla el **protocolo MCP** real. Son dos
   mecanismos distintos y el repo demuestra ambos (ver D13)
@@ -298,7 +308,7 @@ persistencia).**
 
 ## Decisiones y trade-offs
 
-Versión corta (completa en `docs/DECISIONS.md`, D1–D16):
+Versión corta (completa en `docs/DECISIONS.md`, D1–D17):
 
 - **Monorepo TS + Python** — cada lenguaje donde es más fuerte (D1)
 - **Supabase con RLS** en vez de auth artesanal — la seguridad no depende de no

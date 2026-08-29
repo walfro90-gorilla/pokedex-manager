@@ -218,6 +218,31 @@ la entrega: cada fase es independiente, aditiva y testeable; y la parte de IA
 demuestra el mismo principio que gobierna todo el repo — el LLM propone
 (describe, redacta), el código dispone (stats, validación, persistencia).
 
+## D17 — Baja del servidor de demo tras la entrega (2026-08-28)
+El take-home ya fue entregado y evaluado; el VPS de UpCloud (209.50.54.47) seguía
+costando dinero por una demo que ya nadie visita. Se dio de baja **permanentemente**.
+Lo que hace que esto sea barato y no una pérdida es una decisión previa: D11 puso toda
+la infra en el mismo `docker compose` del repo, así que el deploy no era un artefacto
+irreproducible sino dos archivos versionados (`docker-compose.prod.yml` + `Caddyfile`).
+Levantarlo de nuevo en cualquier VPS es rsync + `docker compose up -d --build`; lo único
+que cambia con una IP nueva son los tres valores que la nombran (el host del `Caddyfile`,
+`CORS_ORIGINS`, `NEXT_PUBLIC_AI_SERVICE_URL`) y el Site URL de Supabase Auth. Los
+certificados no se rescataron a propósito: Caddy los re-emite solos contra sslip.io con
+la IP nueva, así que copiarlos habría sido guardar basura.
+
+Antes de borrar se hizo un paquete de rescate fuera del repo (`~/upcloud-rescue/`) y una
+verificación explícita de que no hubiera entropía: comparación por checksum en ambas
+direcciones entre el repo y `/opt/pokedex` (ningún archivo existía solo en el servidor;
+los que diferían resultaron ser blobs exactos de commits del historial, verificado con
+`git hash-object`), y los `.env` cifrados con age. **No se copió base de datos**: la
+persistencia siempre vivió en Supabase hosted y en su Storage, nunca en el disco del VPS
+— consecuencia directa de D1. El servidor era stateless salvo por dos archivos de
+entorno, y esa es la propiedad que hizo que borrarlo fuera una decisión de minutos.
+
+Efecto en la evaluación: la demo en vivo del README ya no responde; el video de 4 min
+queda como evidencia funcional y el `docker compose up` local sigue siendo el camino
+reproducible que el brief pedía (el deploy nunca fue requisito — ver D9).
+
 ## Fuera de alcance (por tiempo, documentado a propósito)
 - Tests e2e del frontend; se priorizaron evals de la capa de IA (mayor riesgo).
 - Cache de PokéAPI en DB propia; el cache de fetch de Next.js cubre el caso.
