@@ -37,13 +37,6 @@ curl -F "file=@pikachu.jpg" localhost:8000/identify     # probar /identify direc
 python evals/run_evals.py
 ```
 
-**web** (scaffolded con create-next-app, sin src/, App Router):
-```
-cd web && npm run dev       # :3000
-cd web && npm run build
-cd web && npm run lint
-```
-
 **todo junto:**
 ```
 docker compose up
