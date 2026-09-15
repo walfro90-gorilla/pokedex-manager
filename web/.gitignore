@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Las plantillas .env*.example SI se versionan: no llevan valores.
+!.env*.example
