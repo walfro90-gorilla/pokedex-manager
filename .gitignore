@@ -5,3 +5,6 @@ __pycache__/
 .env
 .env.local
 .venv/
+
+# Las plantillas .env*.example SI se versionan: no llevan valores.
+!.env*.example
