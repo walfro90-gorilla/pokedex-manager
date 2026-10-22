@@ -7,7 +7,7 @@ con tool calling sobre la colección del usuario.
 **Video (4 min):** https://youtu.be/4EHL-OPYgPo
 
 > **Nota (agosto 2026):** el take-home ya fue entregado y el servidor de la demo en
-> vivo (`https://ip-del-vps.sslip.io`) se dio de baja para no seguir pagándolo. El
+> vivo se dio de baja para no seguir pagándolo. El
 > video sigue mostrando la app completa en funcionamiento, y `docker compose up`
 > levanta todo localmente en un par de minutos (ver *Cómo correrlo*). La receta exacta
 > del deploy que corría en producción está en `docker-compose.prod.yml` + `Caddyfile`
@@ -17,10 +17,9 @@ con tool calling sobre la colección del usuario.
 Instalable como **PWA** (Chrome/Edge: ícono de instalar en la barra de direcciones;
 móvil: "Agregar a pantalla de inicio").
 
-> **Cuenta demo** para probar sin registrarse (la confirmación de email está activa a
-> propósito, ver D8): `pokedex-qa-01@e2etest.dev` / `[contraseña de prueba]` — con equipo, avatar
-> y medallero ya poblados. Sigue viva: la base de datos es Supabase hosted y no dependía
-> del servidor dado de baja.
+> **Para probarla:** `docker compose up` con tu propio proyecto de Supabase (ver
+> *Cómo correrlo*) y crea una cuenta; la confirmación de email está activa a propósito
+> (ver D8).
 
 ![PokéDex Manager](docs/screenshot.jpg)
 
@@ -202,7 +201,7 @@ LLM) · el botón de Google en una instancia propia requiere configurar el provi
   # 2. Registrarlo en Claude Code — las credenciales de Supabase se leen
   #    solas de ai-service/.env (ya llenado para el servicio)
   claude mcp add pokedex \
-    -e POKEDEX_EMAIL=pokedex-qa-01@e2etest.dev -e POKEDEX_PASSWORD='[contraseña de prueba]' \
+    -e POKEDEX_EMAIL=tu-correo@ejemplo.com -e POKEDEX_PASSWORD="$POKEDEX_PASSWORD" \
     -- "$PWD/.venv/bin/python" "$PWD/mcp_server.py"
   ```
 
@@ -213,8 +212,8 @@ LLM) · el botón de Google en una instancia propia requiere configurar el provi
   { "mcpServers": { "pokedex": {
       "command": "<repo>/ai-service/.venv/bin/python",
       "args": ["<repo>/ai-service/mcp_server.py"],
-      "env": { "POKEDEX_EMAIL": "pokedex-qa-01@e2etest.dev",
-               "POKEDEX_PASSWORD": "[contraseña de prueba]" } } } }
+      "env": { "POKEDEX_EMAIL": "tu-correo@ejemplo.com",
+               "POKEDEX_PASSWORD": "<tu contraseña>" } } } }
   ```
 
 - **Usarlo** (sesión nueva de Claude Code, lenguaje natural):

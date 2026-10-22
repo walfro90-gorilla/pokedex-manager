@@ -43,7 +43,6 @@ export default async function LoginPage({
               type="email"
               required
               autoComplete="email"
-              defaultValue="pokedex-qa-01@e2etest.dev"
               className="rounded-full border-2 border-gray-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-poke-blue"
             />
           </label>
@@ -55,7 +54,6 @@ export default async function LoginPage({
               type="password"
               required
               autoComplete="current-password"
-              defaultValue="[contraseña de prueba]"
               className="rounded-full border-2 border-gray-200 px-4 py-2.5 text-sm outline-none transition-colors focus:border-poke-blue"
             />
           </label>
